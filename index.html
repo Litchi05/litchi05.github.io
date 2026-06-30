@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>林怡杰 · 摄影摄像师</title>
+<style>
+  @import url('https://cdn.jsdelivr.net/npm/@fontsource/cormorant-garamond@5/300.css');
+  @import url('https://cdn.jsdelivr.net/npm/@fontsource/cormorant-garamond@5/400.css');
+  @import url('https://cdn.jsdelivr.net/npm/@fontsource/cormorant-garamond@5/500.css');
+  @import url('https://cdn.jsdelivr.net/npm/@fontsource/cormorant-garamond@5/600.css');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:      #08080a;
+    --bg2:     #0d0d10;
+    --surface: #101014;
+    --card:    #141418;
+    --border:  #232328;
+    --border2: #2e2e35;
+    --gold:    #c9a96a;
+    --gold-dim:#9a824f;
+    --red:     #7a3b3b;
+    --text:    #ece7dd;
+    --text-dim:#a09a8f;
+    --muted:   #65605a;
+    --faint:   #3a3631;
+  }
+
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg); color: var(--text);
+    font-family: 'PingFang SC', 'Microsoft YaHei', 'Hiragino Sans GB', sans-serif;
+    font-weight: 300; line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  ::selection { background: var(--gold); color: #08080a; }
+
+  .serif { font-family: 'Cormorant Garamond', serif; }
+
+  /* ============ FILM GRAIN (global) ============ */
+  body::before {
+    content: ''; position: fixed; inset: 0; z-index: 9999; pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+    opacity: .5;
+  }
+
+  /* Global particle canvas */
+  #particles {
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    width: 100%; height: 100%;
+  }
+  nav, header, section, .contact-strip, footer, .works-wrap { position: relative; z-index: 1; }
+
+  /* ============ NAV ============ */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 22px 56px;
+    background: linear-gradient(to bottom, rgba(8,8,10,.9) 30%, transparent);
+    transition: padding .3s;
+  }
+  .nav-logo { font-size: 20px; font-weight: 600; letter-spacing: .14em; color: var(--gold); text-decoration: none; font-family: "PingFang SC","Microsoft YaHei",sans-serif; }
+  .nav-logo span { color: var(--muted); font-weight: 300; font-size: 12px; letter-spacing: .08em; }
+  .nav-links { display: flex; gap: 40px; list-style: none; align-items: center; }
+  .nav-links a {
+    font-size: 12px; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--text-dim); text-decoration: none; transition: color .25s; position: relative;
+  }
+  .nav-links a::after {
+    content: ''; position: absolute; left: 0; bottom: -4px; width: 0; height: 1px;
+    background: var(--gold); transition: width .3s;
+  }
+  .nav-links a:hover { color: var(--text); }
+  .nav-links a:hover::after { width: 100%; }
+
+  /* ============ HERO ============ */
+  .hero { min-height: 100vh; position: relative; display: flex; align-items: center; overflow: hidden; }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 70% 60% at 75% 35%, rgba(122,59,59,.14), transparent 65%),
+      radial-gradient(ellipse 50% 70% at 15% 75%, rgba(201,169,106,.05), transparent 60%),
+      linear-gradient(165deg, #0c0a0b 0%, #08080a 45%, #0a0a0d 100%);
+  }
+  /* cinematic letterbox bars */
+  .hero::before, .hero::after {
+    content: ''; position: absolute; left: 0; right: 0; height: 50px; z-index: 3;
+    background: #000; opacity: .55;
+  }
+  .hero::before { top: 0; }
+  .hero::after { bottom: 0; }
+
+  .hero-inner { position: relative; z-index: 2; padding: 0 56px; width: 100%; max-width: 1400px; margin: 0 auto; }
+  .hero-eyebrow {
+    font-size: 11px; letter-spacing: .35em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 28px;
+    display: flex; align-items: center; gap: 14px;
+    opacity: 0; animation: fadeUp .9s .2s forwards;
+  }
+  .hero-eyebrow::before { content: ''; width: 40px; height: 1px; background: var(--gold); }
+  .hero h1 {
+    font-size: clamp(64px, 11vw, 150px); font-weight: 300; line-height: .92;
+    letter-spacing: -.01em; color: var(--text); margin-bottom: 24px;
+    opacity: 0; animation: fadeUp .9s .35s forwards;
+  }
+  .hero h1 em { font-style: normal; font-weight: 600; color: var(--gold); }
+  .hero-tagline {
+    font-size: clamp(15px, 2vw, 18px); color: var(--text-dim);
+    max-width: 600px; line-height: 1.9; margin-bottom: 44px;
+    opacity: 0; animation: fadeUp .9s .5s forwards;
+  }
+  .hero-role {
+    font-size: 13px; letter-spacing: .1em; color: var(--muted);
+    margin-bottom: 44px; opacity: 0; animation: fadeUp .9s .6s forwards;
+  }
+  .hero-metrics {
+    display: flex; gap: 48px; flex-wrap: wrap; margin-bottom: 48px;
+    opacity: 0; animation: fadeUp .9s .6s forwards;
+  }
+  .hmetric { display: flex; flex-direction: column; gap: 6px; }
+  .hm-num { font-size: clamp(34px, 4.5vw, 48px); font-weight: 400; line-height: 1; color: var(--gold); }
+  .hm-num i { font-style: normal; font-size: .5em; color: var(--gold-dim); }
+  .hm-label { font-size: 12px; letter-spacing: .08em; color: var(--text-dim); }
+  @media (max-width: 768px) {
+    .hero-metrics { gap: 28px 36px; margin-bottom: 36px; }
+    .hm-num { font-size: 32px; }
+    .hm-label { font-size: 11px; }
+  }
+  .hero-actions { display: flex; gap: 18px; flex-wrap: wrap; opacity: 0; animation: fadeUp .9s .8s forwards; }
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 12px;
+    font-size: 12px; letter-spacing: .16em; text-transform: uppercase;
+    color: #08080a; background: var(--gold); padding: 16px 34px;
+    text-decoration: none; transition: background .25s, transform .25s;
+  }
+  .btn-primary:hover { background: #dcc085; transform: translateY(-2px); }
+  .btn-primary svg { transition: transform .25s; }
+  .btn-primary:hover svg { transform: translateX(4px); }
+  .btn-ghost {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-size: 12px; letter-spacing: .16em; text-transform: uppercase;
+    color: var(--text); border: 1px solid var(--border2); padding: 16px 34px;
+    text-decoration: none; transition: border-color .25s, color .25s;
+  }
+  .btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
+
+  .hero-scroll {
+    position: absolute; bottom: 70px; left: 50%; transform: translateX(-50%); z-index: 4;
+    display: flex; flex-direction: column; align-items: center; gap: 10px;
+    opacity: 0; animation: fadeUp .9s 1s forwards;
+  }
+  .hero-scroll span { font-size: 10px; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); }
+  .scroll-line { width: 1px; height: 44px; background: linear-gradient(var(--gold), transparent); animation: scrollPulse 2s infinite; }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes scrollPulse { 0%,100% { opacity: .3; } 50% { opacity: 1; } }
+
+  /* ============ SECTION FRAME ============ */
+  section { position: relative; }
+  .sec-pad { padding: 120px 56px; max-width: 1400px; margin: 0 auto; }
+  .sec-head { display: flex; align-items: baseline; gap: 24px; margin-bottom: 80px; }
+  .sec-index { font-size: 13px; letter-spacing: .2em; color: var(--gold); font-weight: 400; }
+  .sec-title { font-size: clamp(32px, 5vw, 56px); font-weight: 300; color: var(--text); letter-spacing: .01em; }
+  .sec-rule { flex: 1; height: 1px; background: linear-gradient(to right, var(--border2), transparent); margin-left: 16px; align-self: center; }
+
+  /* ============ PROFILE / ABOUT ============ */
+  .profile { background: var(--bg2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .profile-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 90px; align-items: start; }
+  .profile-lead {
+    font-size: clamp(20px, 2.6vw, 26px); font-weight: 300; line-height: 1.7;
+    color: var(--text); margin-bottom: 40px;
+  }
+  .profile-lead em { font-style: normal; color: var(--gold); }
+  .profile-body p { font-size: 15px; color: var(--text-dim); line-height: 1.95; margin-bottom: 18px; }
+  .profile-body strong { color: var(--text); font-weight: 400; }
+
+  .profile-side { border-left: 1px solid var(--border); padding-left: 44px; }
+  .ps-block { margin-bottom: 32px; }
+  .ps-label { font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; }
+  .ps-items { font-size: 13.5px; color: var(--text-dim); line-height: 1.85; }
+  .ps-divider { height: 1px; background: var(--border); margin: 28px 0; }
+
+  /* ============ STRENGTHS (advantage cards) ============ */
+  .strengths-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); }
+  .strength {
+    background: var(--bg); padding: 44px 40px;
+    transition: background .3s; position: relative;
+  }
+  .strength:hover { background: var(--card); }
+  .strength-num { font-size: 13px; letter-spacing: .15em; color: var(--gold-dim); margin-bottom: 18px; }
+  .strength-title { font-size: 19px; font-weight: 400; color: var(--text); margin-bottom: 14px; letter-spacing: .02em; }
+  .strength-desc { font-size: 14px; color: var(--text-dim); line-height: 1.85; }
+
+  /* ============ WORK TIMELINE ============ */
+  .timeline { position: relative; }
+  .tl-item { display: grid; grid-template-columns: 200px 1fr; gap: 48px; padding: 44px 0; border-top: 1px solid var(--border); }
+  .tl-item:last-child { border-bottom: 1px solid var(--border); }
+  .tl-period { font-size: 13px; letter-spacing: .08em; color: var(--gold); padding-top: 4px; }
+  .tl-period .tl-role { display: block; color: var(--muted); margin-top: 6px; font-size: 12px; letter-spacing: .05em; }
+  .tl-company { font-size: 22px; font-weight: 400; color: var(--text); margin-bottom: 24px; letter-spacing: .01em; }
+  .tl-points { list-style: none; display: flex; flex-direction: column; gap: 16px; }
+  .tl-points li { font-size: 14.5px; color: var(--text-dim); line-height: 1.8; padding-left: 22px; position: relative; }
+  .tl-points li::before { content: ''; position: absolute; left: 0; top: 11px; width: 7px; height: 1px; background: var(--gold); }
+  .tl-points li strong { color: var(--text); font-weight: 400; }
+
+  /* ============ WORKS / VIDEO SERIES ============ */
+  .works { background: var(--bg2); border-top: 1px solid var(--border); }
+  .series { margin-bottom: 96px; }
+  .series:last-child { margin-bottom: 0; }
+  .series-head { display: grid; grid-template-columns: 110px 1fr; gap: 28px; margin-bottom: 36px; align-items: start; }
+  .series-num { font-size: 64px; font-weight: 300; line-height: .8; color: var(--red); }
+  .series-info { padding-top: 8px; }
+  .series-name { font-size: 26px; font-weight: 400; color: var(--text); margin-bottom: 10px; letter-spacing: .02em; }
+  .series-sub { font-size: 14px; color: var(--text-dim); line-height: 1.75; max-width: 620px; }
+  .series-tag {
+    display: inline-flex; align-items: center; gap: 8px; margin-top: 14px;
+    font-size: 11px; letter-spacing: .15em; text-transform: uppercase; color: var(--gold);
+  }
+  .series-tag::before { content: ''; width: 26px; height: 1px; background: var(--gold); }
+
+  .vgrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-left: 138px; }
+  .vcard {
+    position: relative; background: var(--card); cursor: pointer;
+    border: 1px solid var(--border); overflow: hidden;
+    transition: transform .35s, border-color .35s;
+  }
+  .vcard:hover { transform: translateY(-6px); border-color: var(--red); }
+  .vthumb { position: relative; aspect-ratio: 9/16; overflow: hidden; background: #0b0b0d; }
+  .vthumb.land { aspect-ratio: 16/9; }
+  .vthumb video { width: 100%; height: 100%; object-fit: cover; pointer-events: none; filter: brightness(.8) saturate(.88); transition: filter .35s; }
+  .vcard:hover .vthumb video { filter: brightness(.96) saturate(1.06); }
+  .vplaceholder {
+    width: 100%; height: 100%; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 14px;
+    background: linear-gradient(150deg, #141418, #18130f);
+  }
+  .vplaceholder svg { opacity: .22; }
+  .vplaceholder span { font-size: 10px; color: var(--faint); letter-spacing: .18em; }
+  .vplay { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity .3s; background: rgba(0,0,0,.25); }
+  .vcard:hover .vplay { opacity: 1; }
+  .vplay-circle {
+    width: 54px; height: 54px; border: 1.5px solid rgba(255,255,255,.85); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,.4); backdrop-filter: blur(4px);
+  }
+  .vplay-circle svg { margin-left: 3px; }
+  .vlabel { padding: 15px 17px; border-top: 1px solid var(--border); }
+  .vname { font-size: 13px; color: var(--text); line-height: 1.4; }
+
+  .vcard-soon { cursor: default; }
+  .vcard-soon:hover { transform: none; border-color: var(--border); }
+  .vplaceholder-soon { background: linear-gradient(150deg, #0f0f12, #121013); }
+  .vplaceholder-soon span { color: #4a443d; }
+
+  /* ============ CONTACT ============ */
+  .contact { background: var(--bg); position: relative; overflow: hidden; }
+  .contact-bg {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 60% 80% at 80% 50%, rgba(122,59,59,.1), transparent 60%);
+  }
+  .contact-inner { position: relative; z-index: 1; display: flex; align-items: center; justify-content: space-between; gap: 50px; flex-wrap: wrap; }
+  .contact-left .serif { font-size: clamp(36px, 6vw, 68px); font-weight: 300; line-height: 1.05; margin-bottom: 16px; }
+  .contact-left .serif em { font-style: normal; color: var(--gold); }
+  .contact-meta { font-size: 14px; color: var(--text-dim); letter-spacing: .05em; }
+  .contact-links { display: flex; flex-direction: column; gap: 14px; min-width: 260px; }
+  .clink {
+    display: flex; align-items: center; justify-content: space-between; gap: 20px;
+    padding: 18px 24px; border: 1px solid var(--border2); text-decoration: none;
+    color: var(--text); transition: border-color .25s, background .25s; font-size: 14px; letter-spacing: .03em;
+  }
+  .clink:hover { border-color: var(--gold); background: var(--card); }
+  .clink .clabel { font-size: 11px; letter-spacing: .15em; text-transform: uppercase; color: var(--muted); }
+  .clink:hover .clabel { color: var(--gold); }
+
+  footer {
+    padding: 28px 56px; border-top: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 12px; color: var(--muted); letter-spacing: .03em; max-width: 1400px; margin: 0 auto;
+  }
+
+  /* ============ MODAL ============ */
+  .modal-overlay {
+    display: none; position: fixed; inset: 0; z-index: 500;
+    background: rgba(4,4,6,.95); align-items: center; justify-content: center; backdrop-filter: blur(8px);
+  }
+  .modal-overlay.open { display: flex; }
+  .modal-inner { width: 90vw; max-width: 460px; position: relative; }
+  .modal-inner.land { max-width: 980px; }
+  .modal-vwrap {
+    width: 100%; aspect-ratio: 9/16; max-height: 84vh; position: relative;
+    display: flex; align-items: center; justify-content: center;
+    border: 1px solid var(--border2); background: #000;
+  }
+  .modal-vwrap.land { aspect-ratio: 16/9; }
+  .modal-vwrap video { width: 100%; height: 100%; object-fit: contain; }
+  .modal-vwrap iframe { width: 100%; height: 100%; border: 0; }
+  .modal-close {
+    position: absolute; top: -46px; right: 0; background: none; border: none; cursor: pointer;
+    font-size: 12px; letter-spacing: .15em; text-transform: uppercase; color: var(--text-dim);
+    display: flex; align-items: center; gap: 8px; transition: color .2s;
+  }
+  .modal-close:hover { color: var(--text); }
+
+  /* ============ SCROLL REVEAL ============ */
+  .reveal { opacity: 0; transform: translateY(30px); transition: opacity .8s, transform .8s; }
+  .reveal.in { opacity: 1; transform: translateY(0); }
+
+
+  /* ============ AIGC PREMIUM ANIMATIONS ============ */
+  /* Aurora flowing gradient in hero */
+  .hero-bg::before {
+    content: ''; position: absolute; inset: -20%;
+    background:
+      radial-gradient(circle at 30% 40%, rgba(201,169,106,.10), transparent 35%),
+      radial-gradient(circle at 70% 60%, rgba(122,59,59,.14), transparent 40%),
+      radial-gradient(circle at 50% 80%, rgba(201,169,106,.06), transparent 45%);
+    animation: aurora 18s ease-in-out infinite;
+    filter: blur(40px);
+  }
+  @keyframes aurora {
+    0%, 100% { transform: translate(0,0) scale(1); opacity: .8; }
+    33% { transform: translate(5%,-3%) scale(1.1); opacity: 1; }
+    66% { transform: translate(-4%,4%) scale(1.05); opacity: .9; }
+  }
+
+  /* Shimmer sweep on video cards while loading/hover */
+  .vthumb::after {
+    content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+    background: linear-gradient(110deg, transparent 30%, rgba(201,169,106,.08) 50%, transparent 70%);
+    background-size: 200% 100%;
+    opacity: 0; transition: opacity .4s;
+  }
+  .vcard:hover .vthumb::after { opacity: 1; animation: shimmer 1.6s ease-in-out infinite; }
+  @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+  /* Glowing pulse on play button */
+  .vcard:hover .vplay-circle {
+    animation: playGlow 1.8s ease-in-out infinite;
+    border-color: var(--gold);
+  }
+  @keyframes playGlow {
+    0%,100% { box-shadow: 0 0 0 0 rgba(201,169,106,.4); }
+    50% { box-shadow: 0 0 0 8px rgba(201,169,106,0); }
+  }
+
+  /* Animated gradient text on hero name */
+  .hero h1 em {
+    background: linear-gradient(120deg, #c9a96a 0%, #e6d3a3 30%, #c9a96a 60%, #9a824f 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: goldFlow 6s linear infinite;
+  }
+  @keyframes goldFlow { to { background-position: 200% center; } }
+
+  /* Series number glow on scroll-in */
+  .series.in .series-num {
+    animation: numReveal 1s cubic-bezier(.2,.7,.2,1) both;
+  }
+  @keyframes numReveal {
+    from { opacity: 0; transform: translateY(20px); letter-spacing: .1em; }
+    to { opacity: 1; transform: translateY(0); letter-spacing: 0; }
+  }
+
+  /* Metric numbers count-up feel (fade+rise stagger) */
+  .hmetric { animation: metricRise .8s cubic-bezier(.2,.7,.2,1) both; }
+  .hmetric:nth-child(1) { animation-delay: .7s; }
+  .hmetric:nth-child(2) { animation-delay: .8s; }
+  .hmetric:nth-child(3) { animation-delay: .9s; }
+  .hmetric:nth-child(4) { animation-delay: 1s; }
+  @keyframes metricRise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* Strength cards: animated border glow on hover */
+  .strength::after {
+    content: ''; position: absolute; left: 0; top: 0; width: 100%; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    transform: scaleX(0); transform-origin: left; transition: transform .5s;
+  }
+  .strength:hover::after { transform: scaleX(1); }
+
+  /* Smooth gold underline grow on section titles when revealed */
+  .sec-head.in .sec-rule { animation: ruleGrow 1.2s ease both; }
+  @keyframes ruleGrow { from { transform: scaleX(0); transform-origin: left; } to { transform: scaleX(1); } }
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width: 900px) {
+    .profile-grid { grid-template-columns: 1fr; gap: 50px; }
+    .profile-side { border-left: none; padding-left: 0; border-top: 1px solid var(--border); padding-top: 40px; }
+    .strengths-grid { grid-template-columns: 1fr; }
+    .tl-item { grid-template-columns: 1fr; gap: 16px; }
+    .vgrid { margin-left: 0; }
+  }
+  @media (max-width: 768px) {
+    nav { padding: 16px 24px; }
+    .nav-links { gap: 20px; }
+    .nav-links a { font-size: 11px; letter-spacing: .1em; }
+    .sec-pad { padding: 80px 24px; }
+    .sec-head { margin-bottom: 50px; gap: 14px; }
+    .hero-inner { padding: 0 24px; }
+    .series-head { grid-template-columns: 60px 1fr; gap: 16px; }
+    .series-num { font-size: 42px; }
+    .vgrid { gap: 12px; }
+    .contact-inner { flex-direction: column; align-items: flex-start; }
+    .contact-links { width: 100%; }
+    footer { padding: 22px 24px; flex-direction: column; gap: 10px; text-align: center; }
+  }
+  @media (max-width: 480px) {
+    .vgrid { grid-template-columns: repeat(2, 1fr); }
+    .nav-links { display: none; }
+    .nav-burger { display: flex; }
+  }
+
+  /* ============ MOBILE BURGER ============ */
+  .nav-burger {
+    display: none; background: none; border: none; cursor: pointer;
+    padding: 6px; flex-direction: column; gap: 5px; z-index: 200;
+  }
+  .nav-burger span {
+    display: block; width: 22px; height: 1.5px;
+    background: var(--text-dim); transition: all .3s;
+  }
+  .nav-burger.active span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); background: var(--gold); }
+  .nav-burger.active span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+  .nav-burger.active span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); background: var(--gold); }
+
+  .nav-mobile {
+    display: none; position: fixed; inset: 0; z-index: 150;
+    background: rgba(8,8,10,.97); flex-direction: column;
+    align-items: center; justify-content: center; gap: 36px;
+    backdrop-filter: blur(20px);
+  }
+  .nav-mobile.open { display: flex; animation: fadeUp .3s ease; }
+  .nav-mobile a {
+    font-size: 24px; letter-spacing: .08em; color: var(--text);
+    text-decoration: none; transition: color .25s; position: relative;
+  }
+  .nav-mobile a::after {
+    content: ''; position: absolute; left: 0; bottom: -6px; width: 0; height: 1px;
+    background: var(--gold); transition: width .3s;
+  }
+  .nav-mobile a:hover { color: var(--gold); }
+  .nav-mobile a:hover::after { width: 100%; }
+  .nav-mobile-close {
+    position: absolute; top: 22px; right: 24px;
+    background: none; border: none; cursor: pointer;
+    color: var(--text-dim); font-size: 11px; letter-spacing: .15em; text-transform: uppercase;
+    display: flex; align-items: center; gap: 6px; transition: color .2s;
+  }
+  .nav-mobile-close:hover { color: var(--text); }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+    .reveal { opacity: 1; transform: none; }
+  }
+</style>
+</head>
+<body>
+<canvas id="particles" aria-hidden="true"></canvas>
+
+<nav>
+  <a class="nav-logo serif" href="#">林怡杰<span> · 摄影摄像</span></a>
+  <ul class="nav-links">
+    <li><a href="#profile">关于</a></li>
+    <li><a href="#strengths">优势</a></li>
+    <li><a href="#works">作品</a></li>
+    <li><a href="#experience">经历</a></li>
+    <li><a href="#contact">联系</a></li>
+  </ul>
+  <button class="nav-burger" id="nav-burger" aria-label="菜单" aria-expanded="false" onclick="toggleMobileNav()">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="nav-mobile" id="nav-mobile" role="navigation" aria-label="移动端菜单">
+  <button class="nav-mobile-close" onclick="toggleMobileNav()">
+    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    关闭
+  </button>
+  <a href="#profile" onclick="toggleMobileNav()">关于</a>
+  <a href="#strengths" onclick="toggleMobileNav()">优势</a>
+  <a href="#works" onclick="toggleMobileNav()">作品</a>
+  <a href="#experience" onclick="toggleMobileNav()">经历</a>
+  <a href="#contact" onclick="toggleMobileNav()">联系</a>
+</div>
+
+<!-- ============ HERO ============ -->
+<header class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-inner">
+    <div class="hero-eyebrow">资深摄像师 · 广州</div>
+    <h1 class="serif">林<em>怡杰</em></h1>
+    <p class="hero-tagline">影视制作专业出身，4 年拍摄经验，深耕品牌视觉内容创作。<br>独立完成品牌宣传片、产品发布会、信息流短视频从拍摄到后期剪辑的全流程交付。</p>
+    <div class="hero-metrics">
+      <div class="hmetric"><span class="hm-num serif">300<i>+</i></span><span class="hm-label">信息流短视频交付</span></div>
+      <div class="hmetric"><span class="hm-num serif">50<i>+</i></span><span class="hm-label">企业家访谈拍摄</span></div>
+      <div class="hmetric"><span class="hm-num serif">20<i>%+</i></span><span class="hm-label">完播率提升</span></div>
+      <div class="hmetric"><span class="hm-num serif">0</span><span class="hm-label">直播播出事故</span></div>
+    </div>
+    <div class="hero-actions">
+      <a class="btn-primary" href="#works">浏览作品 <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      <a class="btn-ghost" href="#contact">联系我</a>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</header>
+
+<!-- ============ PROFILE ============ -->
+<section class="profile" id="profile">
+  <div class="sec-pad">
+    <div class="sec-head reveal">
+      <span class="sec-index">01 —</span>
+      <h2 class="sec-title serif">关于我</h2>
+      <div class="sec-rule"></div>
+    </div>
+    <div class="profile-grid">
+      <div class="reveal">
+        <p class="profile-lead serif">用<em>广电级</em>的专业标准，做有<em>商业转化力</em>的品牌内容。</p>
+        <div class="profile-body">
+          <p>广播影视制作专业出身，拥有<strong>广东广播电视台（GDTV）</strong>正式摄像经验，参与省级 3·15 晚会等重点直播项目，受过严格的广电播控训练，具备零事故执行标准。</p>
+          <p>4 年拍摄经验，覆盖品牌宣传片、产品发布会、信息流短视频等多类型内容。擅长根据<strong>千川投放数据</strong>反向优化拍摄策略，将画面决策与商业转化挂钩。</p>
+          <p>持续探索 AIGC 工具在内容创作中的应用，将即梦、Kling 等 AI 生成素材融入实拍工作流，提升内容产出效率与视觉丰富度。</p>
+        </div>
+      </div>
+      <div class="profile-side reveal">
+        <div class="ps-block">
+          <div class="ps-label">摄影器材</div>
+          <div class="ps-items">Sony FX3 · A7S3 · A7M4<br>Canon R5 · C70<br>大疆 RS 系列稳定器 · 无线图传 · 滑轨</div>
+        </div>
+        <div class="ps-divider"></div>
+        <div class="ps-block">
+          <div class="ps-label">后期软件</div>
+          <div class="ps-items">DaVinci Resolve · Premiere Pro · 剪映 AI</div>
+        </div>
+        <div class="ps-divider"></div>
+        <div class="ps-block">
+          <div class="ps-label">AIGC 工具</div>
+          <div class="ps-items">即梦 · Kling · Runway（视频生成）<br>ChatGPT · Claude · Gemini（分镜参考）</div>
+        </div>
+        <div class="ps-divider"></div>
+        <div class="ps-block">
+          <div class="ps-label">基本信息</div>
+          <div class="ps-items">24 岁 · 广州 · 持驾照 · 可出差<br>期望薪资 面议</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STRENGTHS ============ -->
+<section id="strengths">
+  <div class="sec-pad">
+    <div class="sec-head reveal">
+      <span class="sec-index">02 —</span>
+      <h2 class="sec-title serif">核心优势</h2>
+      <div class="sec-rule"></div>
+    </div>
+    <div class="strengths-grid reveal">
+      <div class="strength">
+        <div class="strength-num">/ 01</div>
+        <div class="strength-title">广电科班 · 商业实战</div>
+        <div class="strength-desc">GDTV 正式摄像经验，精通演播室三点布光与多机位导摄，叠加 4 年拍摄实战，兼顾专业素养与商业产出能力。</div>
+      </div>
+      <div class="strength">
+        <div class="strength-num">/ 02</div>
+        <div class="strength-title">信息流全链路</div>
+        <div class="strength-desc">累计输出信息流短视频 300+ 条，熟悉黄金 3 秒钩子、口播节奏、产品卖点视觉化等核心打法，具备分镜到成片的全案闭环能力。</div>
+      </div>
+      <div class="strength">
+        <div class="strength-num">/ 03</div>
+        <div class="strength-title">数据驱动思维</div>
+        <div class="strength-desc">熟悉千川投放逻辑，根据完播率、点击率、黄金 3 秒留存反向优化运镜与节奏，曾通过动态调整使单条视频完播率提升 20%+。</div>
+      </div>
+      <div class="strength">
+        <div class="strength-num">/ 04</div>
+        <div class="strength-title">AIGC 视觉赋能</div>
+        <div class="strength-desc">将 AI 生成视频融入拍摄工作流，根据脚本用即梦、Kling、Runway 生成产品场景与创意素材，与实拍混剪，降低成本、丰富视觉表达。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ WORKS ============ -->
+<section class="works" id="works">
+  <div class="sec-pad">
+    <div class="sec-head reveal">
+      <span class="sec-index">03 —</span>
+      <h2 class="sec-title serif">作品系列</h2>
+      <div class="sec-rule"></div>
+    </div>
+
+    <!-- 信息流 -->
+    <div class="series reveal">
+      <div class="series-head">
+        <div class="series-num serif">01</div>
+        <div class="series-info">
+          <div class="series-name">信息流广告</div>
+          <div class="series-sub">针对千川投放优化的商业短视频，注重黄金 3 秒钩子、口播节奏与产品卖点视觉化，配合投放数据动态调整画面节奏。</div>
+          <div class="series-tag">6 支作品</div>
+        </div>
+      </div>
+      <div class="vgrid">
+        <div class="vcard" data-bvid="BV1sRKo6WEzR" data-orient="portrait" onclick="openModal(this)">
+          <div class="vthumb"><div class="vplaceholder"><svg width="42" height="42" fill="none" stroke="#c9a96a" stroke-width="1" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M10 9l5 3-5 3V9z"/></svg><span>VIDEO</span></div><div class="vplay"><div class="vplay-circle"><svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+        </div>
+        <div class="vcard" data-bvid="BV12XKo6RENE" data-orient="portrait" onclick="openModal(this)">
+          <div class="vthumb"><div class="vplaceholder"><svg width="42" height="42" fill="none" stroke="#c9a96a" stroke-width="1" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M10 9l5 3-5 3V9z"/></svg><span>VIDEO</span></div><div class="vplay"><div class="vplay-circle"><svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+        </div>
+        <div class="vcard" data-bvid="BV1WZKo6HEw4" data-orient="portrait" onclick="openModal(this)">
+          <div class="vthumb"><div class="vplaceholder"><svg width="42" height="42" fill="none" stroke="#c9a96a" stroke-width="1" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M10 9l5 3-5 3V9z"/></svg><span>VIDEO</span></div><div class="vplay"><div class="vplay-circle"><svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+        </div>
+        <div class="vcard" data-bvid="BV1pZKo6HE62" data-orient="portrait" onclick="openModal(this)">
+          <div class="vthumb"><div class="vplaceholder"><svg width="42" height="42" fill="none" stroke="#c9a96a" stroke-width="1" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M10 9l5 3-5 3V9z"/></svg><span>VIDEO</span></div><div class="vplay"><div class="vplay-circle"><svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+        </div>
+        <div class="vcard" data-bvid="BV1PdKo69EkB" data-orient="portrait" onclick="openModal(this)">
+          <div class="vthumb"><div class="vplaceholder"><svg width="42" height="42" fill="none" stroke="#c9a96a" stroke-width="1" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M10 9l5 3-5 3V9z"/></svg><span>VIDEO</span></div><div class="vplay"><div class="vplay-circle"><svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+        </div>
+        <div class="vcard" data-bvid="BV1ydKo6XEeV" data-orient="portrait" onclick="openModal(this)">
+          <div class="vthumb"><div class="vplaceholder"><svg width="42" height="42" fill="none" stroke="#c9a96a" stroke-width="1" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M10 9l5 3-5 3V9z"/></svg><span>VIDEO</span></div><div class="vplay"><div class="vplay-circle"><svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="series reveal">
+      <div class="series-head">
+        <div class="series-num serif">02</div>
+        <div class="series-info">
+          <div class="series-name">品牌营销与宣传</div>
+          <div class="series-sub">品牌形象与产品营销视频，从脚本策划到拍摄剪辑全案执行，呈现品牌调性与产品视觉语言。</div>
+          <div class="series-tag">6 支作品</div>
+        </div>
+      </div>
+      <div class="vgrid">
+        <div class="vcard" data-bvid="BV1tUKo6tEnu" data-orient="landscape" onclick="openModal(this)">
+          <div class="vthumb land"><div class="vplaceholder"><svg width="42" height="42" fill="none" stroke="#c9a96a" stroke-width="1" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M10 9l5 3-5 3V9z"/></svg><span>VIDEO</span></div><div class="vplay"><div class="vplay-circle"><svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+        </div>
+        <div class="vcard" data-bvid="BV1bUKo6tEN4" data-orient="landscape" onclick="openModal(this)">
+          <div class="vthumb land"><div class="vplaceholder"><svg width="42" height="42" fill="none" stroke="#c9a96a" stroke-width="1" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M10 9l5 3-5 3V9z"/></svg><span>VIDEO</span></div><div class="vplay"><div class="vplay-circle"><svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+        </div>
+        <div class="vcard" data-bvid="BV1bUKo6tEwm" data-orient="landscape" onclick="openModal(this)">
+          <div class="vthumb land"><div class="vplaceholder"><svg width="42" height="42" fill="none" stroke="#c9a96a" stroke-width="1" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M10 9l5 3-5 3V9z"/></svg><span>VIDEO</span></div><div class="vplay"><div class="vplay-circle"><svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+        </div>
+        <div class="vcard" data-bvid="BV1b2Ko6fEFH" data-orient="landscape" onclick="openModal(this)">
+          <div class="vthumb land"><div class="vplaceholder"><svg width="42" height="42" fill="none" stroke="#c9a96a" stroke-width="1" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M10 9l5 3-5 3V9z"/></svg><span>VIDEO</span></div><div class="vplay"><div class="vplay-circle"><svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+        </div>
+        <div class="vcard" data-bvid="BV12QKo6xEAc" data-orient="landscape" onclick="openModal(this)">
+          <div class="vthumb land"><div class="vplaceholder"><svg width="42" height="42" fill="none" stroke="#c9a96a" stroke-width="1" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M10 9l5 3-5 3V9z"/></svg><span>VIDEO</span></div><div class="vplay"><div class="vplay-circle"><svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+        </div>
+        <div class="vcard" data-bvid="BV1xQKo6xEQi" data-orient="landscape" onclick="openModal(this)">
+          <div class="vthumb land"><div class="vplaceholder"><svg width="42" height="42" fill="none" stroke="#c9a96a" stroke-width="1" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M10 9l5 3-5 3V9z"/></svg><span>VIDEO</span></div><div class="vplay"><div class="vplay-circle"><svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="series reveal">
+      <div class="series-head">
+        <div class="series-num serif">03</div>
+        <div class="series-info">
+          <div class="series-name">会议与活动</div>
+          <div class="series-sub">企业发布会、会议及活动现场摄制，多机位导摄，兼顾现场氛围记录与品牌传播调性。</div>
+          <div class="series-tag">4 支作品</div>
+        </div>
+      </div>
+      <div class="vgrid">
+        <div class="vcard" data-bvid="BV14SKo6oEaB" data-orient="landscape" onclick="openModal(this)">
+          <div class="vthumb land"><div class="vplaceholder"><svg width="42" height="42" fill="none" stroke="#c9a96a" stroke-width="1" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M10 9l5 3-5 3V9z"/></svg><span>VIDEO</span></div><div class="vplay"><div class="vplay-circle"><svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+        </div>
+        <div class="vcard" data-bvid="BV14SKo6oEEn" data-orient="landscape" onclick="openModal(this)">
+          <div class="vthumb land"><div class="vplaceholder"><svg width="42" height="42" fill="none" stroke="#c9a96a" stroke-width="1" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M10 9l5 3-5 3V9z"/></svg><span>VIDEO</span></div><div class="vplay"><div class="vplay-circle"><svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+        </div>
+        <div class="vcard" data-bvid="BV14SKo6oEiY" data-orient="landscape" onclick="openModal(this)">
+          <div class="vthumb land"><div class="vplaceholder"><svg width="42" height="42" fill="none" stroke="#c9a96a" stroke-width="1" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M10 9l5 3-5 3V9z"/></svg><span>VIDEO</span></div><div class="vplay"><div class="vplay-circle"><svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+        </div>
+        <div class="vcard" data-bvid="BV1ETKZ6LErq" data-orient="landscape" onclick="openModal(this)">
+          <div class="vthumb land"><div class="vplaceholder"><svg width="42" height="42" fill="none" stroke="#c9a96a" stroke-width="1" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M10 9l5 3-5 3V9z"/></svg><span>VIDEO</span></div><div class="vplay"><div class="vplay-circle"><svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="series reveal">
+      <div class="series-head">
+        <div class="series-num serif">04</div>
+        <div class="series-info">
+          <div class="series-name">明星网红 Vlog</div>
+          <div class="series-sub">KOL / KOC 种草内容拍摄，自然光与影室布光结合，强化产品场景代入感与人物表现力。</div>
+          <div class="series-tag">3 支作品</div>
+        </div>
+      </div>
+      <div class="vgrid">
+        <div class="vcard" data-bvid="BV1qgKZ6VERj" data-orient="portrait" onclick="openModal(this)">
+          <div class="vthumb"><div class="vplaceholder"><svg width="42" height="42" fill="none" stroke="#c9a96a" stroke-width="1" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M10 9l5 3-5 3V9z"/></svg><span>VIDEO</span></div><div class="vplay"><div class="vplay-circle"><svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+        </div>
+        <div class="vcard" data-bvid="BV17gKZ6VEBA" data-orient="portrait" onclick="openModal(this)">
+          <div class="vthumb"><div class="vplaceholder"><svg width="42" height="42" fill="none" stroke="#c9a96a" stroke-width="1" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M10 9l5 3-5 3V9z"/></svg><span>VIDEO</span></div><div class="vplay"><div class="vplay-circle"><svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+        </div>
+        <div class="vcard" data-bvid="BV1BgKZ6VEKD" data-orient="portrait" onclick="openModal(this)">
+          <div class="vthumb"><div class="vplaceholder"><svg width="42" height="42" fill="none" stroke="#c9a96a" stroke-width="1" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M10 9l5 3-5 3V9z"/></svg><span>VIDEO</span></div><div class="vplay"><div class="vplay-circle"><svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ EXPERIENCE ============ -->
+<section id="experience">
+  <div class="sec-pad">
+    <div class="sec-head reveal">
+      <span class="sec-index">04 —</span>
+      <h2 class="sec-title serif">工作经历</h2>
+      <div class="sec-rule"></div>
+    </div>
+    <div class="timeline">
+      <div class="tl-item reveal">
+        <div class="tl-period">2025.04 — 2026.06<span class="tl-role">资深摄像师</span></div>
+        <div>
+          <div class="tl-company">广州知源持明健康科技有限公司</div>
+          <ul class="tl-points">
+            <li><strong>品牌宣传片 / 产品发布会</strong>　负责旗下品牌（摩可多）品牌宣传片、产品发布会及企业会议全程摄制，多机位导摄，确保画面风格统一、现场零失误交付。</li>
+            <li><strong>信息流规模化产出</strong>　主导完成超 300 条信息流短视频拍摄与后期交付，支撑单月百万级投放消耗，单条视频平均完播率提升 20% 以上。</li>
+            <li><strong>视觉标准化体系</strong>　从 0 到 1 搭建专业直播间与摄影棚，制定标准化布光与机位参数（SOP），将画质提升至商业广告级（4K Log）。</li>
+            <li><strong>AIGC 提效实践</strong>　根据脚本用即梦、Kling 生成产品场景与创意画面，与实拍混剪，快速测试多版视觉风格，提升产出效率。</li>
+          </ul>
+        </div>
+      </div>
+      <div class="tl-item reveal">
+        <div class="tl-period">2024.01 — 2025.04<span class="tl-role">资深摄像师</span></div>
+        <div>
+          <div class="tl-company">广东广播电视台</div>
+          <ul class="tl-points">
+            <li><strong>省级大型活动导摄</strong>　参与广东 3·15 晚会、3·15 论坛等省级重点项目现场录制，负责多机位统筹与讯道配合，直播高压环境下实现零播出事故。</li>
+            <li><strong>高端人物访谈</strong>　担任《品牌广东》《质量访谈录》栏目摄像，完成 50+ 位知名企业家专访，熟练运用伦勃朗光、蝴蝶光等布光技巧。</li>
+            <li><strong>政企宣传片制作</strong>　参与政府及企业形象宣传片摄制，协助导演完成分镜落地，把控镜头语言与画面风格。</li>
+          </ul>
+        </div>
+      </div>
+      <div class="tl-item reveal">
+        <div class="tl-period">2021 — 2024<span class="tl-role">大专</span></div>
+        <div>
+          <div class="tl-company">广州城市职业学院</div>
+          <ul class="tl-points">
+            <li>广播影视节目制作专业，系统学习影视拍摄、剪辑与节目制作流程，奠定广电级专业基础。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTACT ============ -->
+<section class="contact" id="contact">
+  <div class="contact-bg"></div>
+  <div class="sec-pad">
+    <div class="contact-inner">
+      <div class="contact-left reveal">
+        <div class="serif">期待与你<br><em>共创内容</em></div>
+        <div class="contact-meta">广州 · 可出差 · 持驾照 · 随时到岗</div>
+      </div>
+      <div class="contact-links reveal">
+        <a class="clink" href="tel:13432758692"><span class="clabel">电话</span><span>134 3275 8692</span></a>
+        <a class="clink" href="mailto:1624922629@qq.com"><span class="clabel">邮箱</span><span>1624922629@qq.com</span></a>
+        <div class="clink"><span class="clabel">微信</span><span>Bc-Litchi</span></div>
+      </div>
+    </div>
+  </div>
+  <footer>
+    <span>© 2025 林怡杰 · 摄影摄像师</span>
+    <span class="serif" style="font-size:14px;letter-spacing:.1em;">林怡杰</span>
+  </footer>
+</section>
+
+<!-- ============ MODAL ============ -->
+<div class="modal-overlay" id="modal" onclick="closeModalOutside(event)">
+  <div class="modal-inner" id="modal-inner">
+    <button class="modal-close" onclick="closeModal()">
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      关闭
+    </button>
+    <div class="modal-vwrap" id="modal-wrap">
+      <iframe id="modal-iframe" frameborder="0" scrolling="no" allowfullscreen="true" allow="autoplay; fullscreen"></iframe>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Modal
+  function openModal(card) {
+    const bvid = card.dataset.bvid;
+    if (!bvid) return;
+    // B站播放器统一 16:9 横向尺寸
+    document.getElementById('modal-inner').className = 'modal-inner land';
+    document.getElementById('modal-wrap').className = 'modal-vwrap land';
+    const iframe = document.getElementById('modal-iframe');
+    // B站官方嵌入播放器
+    iframe.src = '//player.bilibili.com/player.html?bvid=' + bvid + '&autoplay=1&high_quality=1&danmaku=0';
+    document.getElementById('modal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeModal() {
+    const iframe = document.getElementById('modal-iframe');
+    iframe.src = '';
+    document.getElementById('modal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function closeModalOutside(e) { if (e.target === document.getElementById('modal')) closeModal(); }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+
+  // ===== 微光颗粒背景动画 =====
+  (function() {
+    const canvas = document.getElementById('particles');
+    if (!canvas) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const ctx = canvas.getContext('2d');
+    let w, h, particles = [];
+    const COUNT = 70;
+
+    function resize() {
+      w = canvas.width = window.innerWidth * devicePixelRatio;
+      h = canvas.height = window.innerHeight * devicePixelRatio;
+      canvas.style.width = window.innerWidth + 'px';
+      canvas.style.height = window.innerHeight + 'px';
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    function makeParticle() {
+      return {
+        x: Math.random() * w,
+        y: Math.random() * h,
+        r: (Math.random() * 1.4 + 0.3) * devicePixelRatio,
+        vx: (Math.random() - 0.5) * 0.15 * devicePixelRatio,
+        vy: (Math.random() - 0.5) * 0.15 * devicePixelRatio,
+        baseA: Math.random() * 0.5 + 0.15,
+        tw: Math.random() * Math.PI * 2,        // twinkle phase
+        tws: Math.random() * 0.02 + 0.008,      // twinkle speed
+        gold: Math.random() > 0.5
+      };
+    }
+    for (let i = 0; i < COUNT; i++) particles.push(makeParticle());
+
+    function frame() {
+      ctx.clearRect(0, 0, w, h);
+      for (const p of particles) {
+        p.x += p.vx; p.y += p.vy; p.tw += p.tws;
+        if (p.x < 0) p.x = w; if (p.x > w) p.x = 0;
+        if (p.y < 0) p.y = h; if (p.y > h) p.y = 0;
+        const a = p.baseA * (0.5 + 0.5 * Math.sin(p.tw));
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = p.gold
+          ? 'rgba(201,169,106,' + a.toFixed(3) + ')'
+          : 'rgba(236,231,221,' + (a * 0.7).toFixed(3) + ')';
+        ctx.fill();
+      }
+      requestAnimationFrame(frame);
+    }
+    frame();
+  })();
+
+  // Mobile nav toggle
+  function toggleMobileNav() {
+    const nav = document.getElementById('nav-mobile');
+    const burger = document.getElementById('nav-burger');
+    const open = nav.classList.toggle('open');
+    burger.classList.toggle('active', open);
+    burger.setAttribute('aria-expanded', open);
+    document.body.style.overflow = open ? 'hidden' : '';
+  }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') { const nav = document.getElementById('nav-mobile'); if (nav.classList.contains('open')) toggleMobileNav(); } });
+
+  // Bilibili thumbnail + title auto-load
+  (async function loadBilibiliThumbs() {
+    const cards = document.querySelectorAll('.vcard[data-bvid]');
+    for (const card of cards) {
+      const bvid = card.dataset.bvid;
+      try {
+        const res = await fetch('https://api.bilibili.com/x/web-interface/view?bvid=' + bvid);
+        if (!res.ok) continue;
+        const json = await res.json();
+        if (json.code !== 0 || !json.data) continue;
+        const d = json.data;
+        const thumb = card.querySelector('.vthumb');
+        const ph = thumb.querySelector('.vplaceholder');
+        // Inject cover image
+        const img = document.createElement('img');
+        img.src = d.pic;
+        img.alt = d.title || '';
+        img.style.cssText = 'width:100%;height:100%;object-fit:cover;position:absolute;inset:0;filter:brightness(.8) saturate(.88);transition:filter .35s;';
+        thumb.insertBefore(img, ph);
+        ph.style.display = 'none';
+        card.addEventListener('mouseenter', () => img.style.filter = 'brightness(.96) saturate(1.06)');
+        card.addEventListener('mouseleave', () => img.style.filter = 'brightness(.8) saturate(.88)');
+        // Inject title label
+        if (d.title) {
+          const lbl = document.createElement('div');
+          lbl.className = 'vlabel';
+          const name = document.createElement('div');
+          name.className = 'vname';
+          name.textContent = d.title;
+          lbl.appendChild(name);
+          card.appendChild(lbl);
+        }
+      } catch (e) { /* API不可用时静默降级 */ }
+    }
+  })();
+
+  // Scroll reveal + animation triggers
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal, .series, .sec-head').forEach(el => io.observe(el));
+</script>
+</body>
+</html>
