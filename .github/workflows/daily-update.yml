@@ -1,0 +1,39 @@
+name: 每日案例库自动更新
+
+on:
+  schedule:
+    # UTC 16:05 = 北京时间每天 00:05
+    - cron: '5 16 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: 运行每日更新脚本
+        env:
+          # 可选:在仓库 Settings → Secrets 里配置 ANTHROPIC_API_KEY,
+          # 配置后每天由 Claude 生成新钩子;未配置则从 data/reserve.json 备用池取
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: node scripts/daily-update.mjs
+
+      - name: 提交并推送变更
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git diff --quiet -- data/; then
+            echo "数据无变化,跳过提交"
+          else
+            git add data/
+            git commit -m "chore: 每日案例库自动更新 $(TZ=Asia/Shanghai date +%F)"
+            git push
+          fi

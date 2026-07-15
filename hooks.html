@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>黄金三秒 · 信息流钩子案例库</title>
+<meta name="description" content="抖音信息流黄金三秒钩子案例库:12 种钩子句式、70+ 品牌信息流开场逐条拆解、品牌 TVC 文案脚本与 AI 创意钩子生成器,每日自动更新,供选题、写脚本、拍开头随查随用。">
+<meta property="og:type" content="website">
+<meta property="og:title" content="黄金三秒 · 信息流钩子案例库">
+<meta property="og:description" content="12 种钩子句式、70+ 品牌信息流开场拆解、TVC 文案脚本与 AI 创意钩子生成器,每日自动更新。">
+<meta property="og:url" content="https://litchi05.github.io/hooks.html">
+<meta property="og:image" content="https://litchi05.github.io/og-hooks.png">
+<meta property="og:site_name" content="林怡杰 · 钩子案例库">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="黄金三秒 · 信息流钩子案例库">
+<meta name="twitter:description" content="12 种钩子句式、70+ 品牌信息流开场拆解、TVC 文案脚本与 AI 创意钩子生成器,每日自动更新。">
+<meta name="twitter:image" content="https://litchi05.github.io/og-hooks.png">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2308080a'/%3E%3Ctext x='32' y='44' font-size='30' font-family='Georgia,serif' font-style='italic' fill='%23c9a96a' text-anchor='middle'%3E3s%3C/text%3E%3C/svg%3E">
+<style>
+  @import url('https://cdn.jsdelivr.net/npm/@fontsource/cormorant-garamond@5/400.css');
+  @import url('https://cdn.jsdelivr.net/npm/@fontsource/cormorant-garamond@5/600.css');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:      #08080a;
+    --bg2:     #0d0d10;
+    --surface: #101014;
+    --card:    #141418;
+    --border:  #232328;
+    --border2: #2e2e35;
+    --gold:    #c9a96a;
+    --gold-dim:#9a824f;
+    --red:     #7a3b3b;
+    --text:    #ece7dd;
+    --text-dim:#a09a8f;
+    --muted:   #65605a;
+    --faint:   #3a3631;
+  }
+
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg); color: var(--text);
+    font-family: 'PingFang SC', 'Microsoft YaHei', 'Hiragino Sans GB', sans-serif;
+    font-weight: 300; line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  ::selection { background: var(--gold); color: #08080a; }
+  .serif { font-family: 'Cormorant Garamond', serif; }
+
+  /* ============ FILM GRAIN ============ */
+  body::before {
+    content: ''; position: fixed; inset: 0; z-index: 9999; pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+    opacity: .5;
+  }
+
+  /* ============ NAV ============ */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 22px 56px;
+    background: linear-gradient(to bottom, rgba(8,8,10,.92) 30%, transparent);
+  }
+  .nav-logo { font-size: 20px; font-weight: 600; letter-spacing: .14em; color: var(--gold); text-decoration: none; }
+  .nav-logo span { color: var(--muted); font-weight: 300; font-size: 12px; letter-spacing: .08em; }
+  .nav-links { display: flex; gap: 40px; list-style: none; align-items: center; }
+  .nav-links a {
+    font-size: 12px; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--text-dim); text-decoration: none; transition: color .25s; position: relative;
+  }
+  .nav-links a::after {
+    content: ''; position: absolute; left: 0; bottom: -4px; width: 0; height: 1px;
+    background: var(--gold); transition: width .3s;
+  }
+  .nav-links a:hover { color: var(--text); }
+  .nav-links a:hover::after { width: 100%; }
+
+  /* ============ HERO ============ */
+  .hero { min-height: 78vh; position: relative; display: flex; align-items: center; overflow: hidden; }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 70% 60% at 75% 35%, rgba(122,59,59,.14), transparent 65%),
+      radial-gradient(ellipse 50% 70% at 15% 75%, rgba(201,169,106,.05), transparent 60%),
+      linear-gradient(165deg, #0c0a0b 0%, #08080a 45%, #0a0a0d 100%);
+  }
+  .hero::before, .hero::after {
+    content: ''; position: absolute; left: 0; right: 0; height: 46px; z-index: 3;
+    background: #000; opacity: .55;
+  }
+  .hero::before { top: 0; }
+  .hero::after { bottom: 0; }
+  .hero-inner { position: relative; z-index: 2; padding: 120px 56px 80px; width: 100%; max-width: 1400px; margin: 0 auto; }
+  .hero-eyebrow { font-size: 11px; letter-spacing: .35em; text-transform: uppercase; color: var(--gold); margin-bottom: 28px; }
+  .hero-title { font-size: clamp(40px, 6vw, 84px); font-weight: 400; line-height: 1.15; letter-spacing: .04em; }
+  .hero-title em { font-style: normal; color: var(--gold); }
+  .hero-sub { margin-top: 26px; max-width: 620px; color: var(--text-dim); font-size: 15px; }
+  .hero-stats { display: flex; gap: 64px; margin-top: 56px; flex-wrap: wrap; }
+  .hero-stat .num { font-size: 44px; color: var(--gold); line-height: 1.1; }
+  .hero-stat .lbl { font-size: 12px; letter-spacing: .18em; color: var(--muted); margin-top: 6px; }
+
+  /* ============ SECTION SHELL ============ */
+  section { padding: 110px 56px; position: relative; }
+  .sec-inner { max-width: 1400px; margin: 0 auto; }
+  .sec-eyebrow { font-size: 11px; letter-spacing: .35em; text-transform: uppercase; color: var(--gold-dim); margin-bottom: 16px; }
+  .sec-title { font-size: clamp(26px, 3.4vw, 42px); font-weight: 400; letter-spacing: .05em; margin-bottom: 18px; }
+  .sec-desc { color: var(--text-dim); max-width: 680px; font-size: 14.5px; margin-bottom: 54px; }
+  .sec-alt { background: var(--bg2); }
+
+  /* ============ 今日热门 ============ */
+  .trend-meta { display: flex; align-items: baseline; gap: 20px; flex-wrap: wrap; margin: -30px 0 30px; }
+  .trend-date { font-size: 13px; letter-spacing: .1em; color: var(--gold); font-family: 'Cormorant Garamond', serif; }
+  .trend-tip { font-size: 12px; letter-spacing: .08em; color: var(--muted); }
+  .trend-tip b { color: var(--gold-dim); font-weight: 400; }
+  .trend-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .trend-card {
+    position: relative; background: var(--surface); border: 1px solid var(--border);
+    padding: 24px 24px 20px; transition: border-color .3s, transform .3s;
+  }
+  .trend-card:hover { border-color: var(--gold-dim); transform: translateY(-3px); }
+  .trend-card .trend-rank { position: absolute; top: -1px; right: -1px; background: var(--gold); color: #08080a; font-size: 11px; letter-spacing: .1em; padding: 4px 10px; font-family: 'Cormorant Garamond', serif; }
+  .trend-card .trend-type { font-size: 10.5px; letter-spacing: .12em; color: var(--gold-dim); margin-bottom: 10px; text-transform: uppercase; }
+  .trend-card .trend-hook { font-size: 14px; line-height: 1.7; margin-bottom: 12px; letter-spacing: .02em; }
+  .trend-card .trend-reason { font-size: 12px; color: var(--text-dim); padding-top: 10px; border-top: 1px solid var(--border); }
+
+  /* ============ AI 生成器 ============ */
+  .gen-form { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-bottom: 26px; }
+  .gen-field label { display: block; font-size: 11px; letter-spacing: .14em; color: var(--muted); margin-bottom: 8px; }
+  .gen-field input, .gen-field select {
+    width: 100%; background: var(--surface); border: 1px solid var(--border);
+    color: var(--text); font-family: inherit; font-size: 13.5px; padding: 11px 14px;
+    letter-spacing: .02em; outline: none; transition: border-color .25s;
+  }
+  .gen-field input:focus, .gen-field select:focus { border-color: var(--gold-dim); }
+  .gen-field input::placeholder { color: var(--muted); font-size: 12.5px; }
+  .gen-field select { cursor: pointer; }
+  .gen-btn {
+    font-size: 12.5px; letter-spacing: .18em; text-transform: uppercase; color: #08080a;
+    background: var(--gold); border: none; padding: 13px 32px; cursor: pointer;
+    font-family: inherit; transition: background .25s, transform .2s;
+  }
+  .gen-btn:hover { background: var(--text); }
+  .gen-btn:active { transform: scale(.98); }
+  .gen-results { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 34px; }
+  .gen-card { background: var(--card); border: 1px solid var(--border2); padding: 22px 22px 18px; display: flex; flex-direction: column; }
+  .gen-card .gen-type { font-size: 10.5px; letter-spacing: .12em; color: var(--gold-dim); margin-bottom: 10px; text-transform: uppercase; }
+  .gen-card .gen-hook { font-size: 14px; line-height: 1.7; flex: 1; margin-bottom: 14px; }
+  .gen-card .case-foot { border-top: 1px solid var(--border); }
+
+  /* ============ 方法论 ============ */
+  .method-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+  .method-card {
+    background: var(--surface); border: 1px solid var(--border); padding: 34px 30px;
+    transition: border-color .3s, transform .3s;
+  }
+  .method-card:hover { border-color: var(--gold-dim); transform: translateY(-3px); }
+  .method-card .step { font-size: 34px; color: var(--faint); line-height: 1; }
+  .method-card h3 { font-size: 17px; font-weight: 500; margin: 16px 0 10px; letter-spacing: .06em; }
+  .method-card h3 i { font-style: normal; color: var(--gold); font-size: 12px; letter-spacing: .2em; display: block; margin-bottom: 4px; }
+  .method-card p { font-size: 13.5px; color: var(--text-dim); }
+
+  .formula {
+    margin-top: 26px; border: 1px solid var(--border2); background: var(--card);
+    padding: 30px 34px; display: flex; align-items: center; gap: 18px; flex-wrap: wrap;
+  }
+  .formula .f-label { font-size: 11px; letter-spacing: .3em; color: var(--gold); text-transform: uppercase; margin-right: 10px; }
+  .formula .f-part { font-size: 15px; letter-spacing: .06em; border-bottom: 1px solid var(--gold-dim); padding-bottom: 2px; }
+  .formula .f-op { color: var(--muted); font-size: 18px; }
+
+  /* ============ 钩子类型 ============ */
+  .types-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+  .type-card {
+    background: var(--surface); border: 1px solid var(--border); padding: 26px 24px;
+    cursor: pointer; transition: border-color .3s, background .3s;
+  }
+  .type-card:hover { border-color: var(--gold-dim); background: var(--card); }
+  .type-card .t-no { font-size: 13px; color: var(--faint); letter-spacing: .1em; }
+  .type-card h3 { font-size: 16px; font-weight: 500; margin: 8px 0 6px; letter-spacing: .08em; }
+  .type-card .t-formula { font-size: 12px; color: var(--gold-dim); margin-bottom: 10px; letter-spacing: .04em; }
+  .type-card p { font-size: 12.5px; color: var(--text-dim); line-height: 1.65; }
+  .type-card .t-eg { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); font-size: 12.5px; color: var(--muted); }
+  .type-card .t-eg b { color: var(--text-dim); font-weight: 400; }
+
+  /* ============ 筛选器 ============ */
+  .filter-bar { margin-bottom: 40px; }
+  .filter-row { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; margin-bottom: 16px; }
+  .filter-row .f-cat { font-size: 11px; letter-spacing: .25em; color: var(--muted); text-transform: uppercase; flex-shrink: 0; width: 64px; }
+  .chip {
+    font-size: 12.5px; letter-spacing: .06em; color: var(--text-dim);
+    border: 1px solid var(--border); background: transparent; padding: 6px 16px;
+    cursor: pointer; transition: all .25s; font-family: inherit;
+  }
+  .chip:hover { color: var(--text); border-color: var(--border2); }
+  .chip.on { color: #08080a; background: var(--gold); border-color: var(--gold); }
+  .search-input {
+    width: 100%; max-width: 420px; background: var(--surface); border: 1px solid var(--border);
+    color: var(--text); font-family: inherit; font-size: 13.5px; padding: 11px 18px;
+    letter-spacing: .04em; outline: none; transition: border-color .25s;
+  }
+  .search-input:focus { border-color: var(--gold-dim); }
+  .search-input::placeholder { color: var(--muted); }
+  .result-count { font-size: 12px; color: var(--muted); letter-spacing: .12em; margin-top: 14px; }
+  .result-count b { color: var(--gold); font-weight: 400; }
+
+  /* ============ 案例卡片 ============ */
+  .cases-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .case-card {
+    background: var(--surface); border: 1px solid var(--border);
+    padding: 28px 26px; display: flex; flex-direction: column;
+    transition: border-color .3s, transform .3s;
+  }
+  .case-card:hover { border-color: var(--gold-dim); transform: translateY(-3px); }
+  .case-head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-bottom: 14px; }
+  .case-brand { font-size: 17px; font-weight: 500; letter-spacing: .08em; }
+  .case-tags { display: flex; gap: 6px; flex-shrink: 0; }
+  .tag { font-size: 10.5px; letter-spacing: .08em; padding: 3px 9px; border: 1px solid var(--border2); color: var(--muted); white-space: nowrap; }
+  .tag.gold { color: var(--gold); border-color: var(--gold-dim); }
+  .case-hook {
+    position: relative; background: var(--card); border-left: 2px solid var(--gold);
+    padding: 16px 18px; font-size: 14.5px; line-height: 1.7; letter-spacing: .02em; margin-bottom: 16px;
+  }
+  .case-hook::before { content: '00:00 — 00:03'; display: block; font-size: 10px; letter-spacing: .22em; color: var(--gold-dim); margin-bottom: 6px; font-family: 'Cormorant Garamond', serif; }
+  .case-visual { font-size: 12.5px; color: var(--muted); margin-bottom: 12px; }
+  .case-visual b { color: var(--text-dim); font-weight: 400; letter-spacing: .12em; font-size: 11px; }
+  .case-note { font-size: 13px; color: var(--text-dim); flex: 1; }
+  .case-note b { color: var(--gold-dim); font-weight: 400; letter-spacing: .12px; font-size: 11px; letter-spacing: .12em; }
+  .case-foot { margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; }
+  .copy-btn {
+    font-size: 11px; letter-spacing: .2em; color: var(--muted); background: none; border: none;
+    cursor: pointer; font-family: inherit; transition: color .25s; text-transform: uppercase;
+  }
+  .copy-btn:hover { color: var(--gold); }
+  .copy-btn.done { color: var(--gold); }
+  .empty-tip { grid-column: 1 / -1; text-align: center; color: var(--muted); font-size: 13.5px; padding: 60px 0; letter-spacing: .1em; }
+
+  /* ============ TVC 品牌广告文案 ============ */
+  .tvc-list { display: flex; flex-direction: column; gap: 20px; }
+  .tvc-card { background: var(--surface); border: 1px solid var(--border); padding: 32px 34px; transition: border-color .3s; }
+  .tvc-card:hover { border-color: var(--gold-dim); }
+  .tvc-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin-bottom: 22px; flex-wrap: wrap; }
+  .tvc-brand { font-size: 20px; font-weight: 500; letter-spacing: .08em; }
+  .tvc-tags { display: flex; gap: 6px; flex-shrink: 0; }
+  .tvc-timeline { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 22px; }
+  .tvc-beat { border-left: 2px solid var(--gold-dim); padding: 4px 0 4px 14px; }
+  .tvc-beat .beat-time { font-size: 10.5px; letter-spacing: .1em; color: var(--gold); font-family: 'Cormorant Garamond', serif; margin-bottom: 6px; display: block; }
+  .tvc-beat .beat-stage { font-size: 11px; letter-spacing: .1em; color: var(--muted); margin-bottom: 6px; }
+  .tvc-beat .beat-text { font-size: 13px; color: var(--text-dim); line-height: 1.65; }
+  .tvc-insight { font-size: 13px; color: var(--text-dim); background: var(--card); border-left: 2px solid var(--gold); padding: 14px 18px; margin-bottom: 16px; }
+  .tvc-insight b { color: var(--gold-dim); font-weight: 400; letter-spacing: .12em; font-size: 11px; }
+  .tvc-foot { display: flex; justify-content: flex-end; padding-top: 4px; }
+
+  /* ============ 自检清单 ============ */
+  .check-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px 40px; max-width: 980px; }
+  .check-item { display: flex; gap: 16px; align-items: baseline; border-bottom: 1px solid var(--border); padding: 16px 4px; }
+  .check-item .c-no { font-size: 20px; color: var(--gold-dim); flex-shrink: 0; }
+  .check-item p { font-size: 13.5px; color: var(--text-dim); }
+  .check-item p b { color: var(--text); font-weight: 400; }
+
+  /* ============ FOOTER ============ */
+  footer { padding: 60px 56px; border-top: 1px solid var(--border); }
+  .foot-inner { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: baseline; gap: 20px; flex-wrap: wrap; }
+  footer p { font-size: 12px; color: var(--muted); letter-spacing: .1em; }
+  footer a { color: var(--text-dim); text-decoration: none; font-size: 12px; letter-spacing: .14em; transition: color .25s; }
+  footer a:hover { color: var(--gold); }
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width: 1100px) {
+    .types-grid { grid-template-columns: repeat(3, 1fr); }
+    .cases-grid, .trend-grid, .gen-results { grid-template-columns: repeat(2, 1fr); }
+    .gen-form { grid-template-columns: repeat(2, 1fr); }
+    .tvc-timeline { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 760px) {
+    nav { padding: 14px 0 12px 20px; flex-wrap: wrap; row-gap: 10px; background: rgba(8,8,10,.92); }
+    .nav-logo { font-size: 17px; }
+    .nav-logo span { display: none; }
+    .nav-links {
+      gap: 18px; flex-wrap: nowrap; width: 100%; overflow-x: auto;
+      -webkit-overflow-scrolling: touch; padding-right: 20px; scrollbar-width: none;
+    }
+    .nav-links::-webkit-scrollbar { display: none; }
+    .nav-links a { font-size: 11px; letter-spacing: .06em; flex-shrink: 0; }
+    section { padding: 100px 24px 80px; }
+    .hero-inner { padding: 130px 24px 60px; }
+    .hero-stats { gap: 36px; }
+    .method-grid, .types-grid, .cases-grid, .check-list, .trend-grid, .gen-results, .gen-form, .tvc-timeline { grid-template-columns: 1fr; }
+    .trend-meta { margin-top: 0; }
+    .filter-row .f-cat { width: 100%; }
+    .tvc-card { padding: 26px 22px; }
+    footer { padding: 48px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo serif" href="index.html">林怡杰<span> · 钩子案例库</span></a>
+  <ul class="nav-links">
+    <li><a href="#trending">今日热门</a></li>
+    <li><a href="#method">方法论</a></li>
+    <li><a href="#types">钩子类型</a></li>
+    <li><a href="#generator">AI 生成</a></li>
+    <li><a href="#cases">品牌案例</a></li>
+    <li><a href="#tvc">TVC 文案</a></li>
+    <li><a href="index.html">返回主站</a></li>
+  </ul>
+</nav>
+
+<!-- ============ HERO ============ -->
+<header class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-inner">
+    <p class="hero-eyebrow">Douyin Feed · The Golden 3 Seconds</p>
+    <h1 class="hero-title serif">黄金三秒<br>信息流<em>钩子</em>案例库</h1>
+    <p class="hero-sub">抖音信息流的生死线画在第 3 秒。这里沉淀了钩子的底层方法、十二种可复用的开场句式,以及各大品牌投放素材前三秒的逐条拆解——供选题、写脚本、拍开头时随查随用。</p>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="num serif" id="stat-cases">36</div><div class="lbl">品牌案例</div></div>
+      <div class="hero-stat"><div class="num serif">12</div><div class="lbl">钩子类型</div></div>
+      <div class="hero-stat"><div class="num serif" id="stat-industries">10</div><div class="lbl">覆盖行业</div></div>
+      <div class="hero-stat"><div class="num serif">3s</div><div class="lbl">决定去留</div></div>
+    </div>
+  </div>
+</header>
+
+<!-- ============ TRENDING 今日热门 ============ -->
+<section id="trending">
+  <div class="sec-inner">
+    <p class="sec-eyebrow">Daily Trending</p>
+    <h2 class="sec-title serif">今日热门钩子</h2>
+    <p class="sec-desc">从案例库里按当天日期做种子轮换,每天自动换一批 6 条上榜——不依赖任何后端或人工更新,纯本地计算,刷新也不会变,隔天自动换新。</p>
+    <div class="trend-meta">
+      <span class="trend-date" id="trend-date"></span>
+      <span class="trend-tip">每日 00:00 自动轮换 · 本期编号 <b id="trend-day"></b></span>
+    </div>
+    <div class="trend-grid" id="trend-grid"></div>
+  </div>
+</section>
+
+<!-- ============ METHOD 方法论 ============ -->
+<section id="method">
+  <div class="sec-inner">
+    <p class="sec-eyebrow">Methodology</p>
+    <h2 class="sec-title serif">为什么是三秒</h2>
+    <p class="sec-desc">信息流是"被动观看"场景:用户不是来找你的,是被算法推给你的。3 秒完播率直接影响素材的初始跑量与 ECPM——开头留不住人,后面拍得再好也没有播放机会。</p>
+    <div class="method-grid">
+      <div class="method-card">
+        <div class="step serif">01</div>
+        <h3><i>0 — 1s</i>视觉锤 + 第一句话</h3>
+        <p>画面必须在第一帧就"不像广告":怼脸、冲突动作、反常画面或大字标题。第一句话直接进入信息,不做任何铺垫、问候、自我介绍。</p>
+      </div>
+      <div class="method-card">
+        <div class="step serif">02</div>
+        <h3><i>1 — 3s</i>锁定人群,埋下钩子</h3>
+        <p>让目标用户"对号入座"(点名身份或痛点),同时留一个未完成的悬念或一个明确的利益承诺,给用户一个"再看两秒"的理由。</p>
+      </div>
+      <div class="method-card">
+        <div class="step serif">03</div>
+        <h3><i>3 — 5s</i>兑现与展开</h3>
+        <p>钩子必须被兑现:立刻给出证据、演示或转折,否则用户感到被骗即划走。前 3 秒负责"停留",第 3—5 秒负责"信任"。</p>
+      </div>
+    </div>
+    <div class="formula">
+      <span class="f-label">钩子公式</span>
+      <span class="f-part">叫住谁(人群/痛点)</span>
+      <span class="f-op">×</span>
+      <span class="f-part">打破预期(反差/悬念)</span>
+      <span class="f-op">×</span>
+      <span class="f-part">给出理由(利益/证据)</span>
+      <span class="f-op">=</span>
+      <span class="f-part" style="border-color: var(--gold); color: var(--gold);">3 秒停留</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TYPES 钩子类型 ============ -->
+<section id="types" class="sec-alt">
+  <div class="sec-inner">
+    <p class="sec-eyebrow">Hook Patterns</p>
+    <h2 class="sec-title serif">十二种钩子句式</h2>
+    <p class="sec-desc">点击任意类型,可直接跳转到案例库并按该类型筛选。</p>
+    <div class="types-grid" id="types-grid"></div>
+  </div>
+</section>
+
+<!-- ============ GENERATOR AI 创意钩子 ============ -->
+<section id="generator" class="sec-alt">
+  <div class="sec-inner">
+    <p class="sec-eyebrow">AI Hook Generator</p>
+    <h2 class="sec-title serif">AI 创意钩子生成器</h2>
+    <p class="sec-desc">填入你的产品信息,一键组合出多条可直接用于开场的创意钩子。生成引擎基于本页十二种钩子公式做本地规则运算,不调用外部大模型、不上传任何数据,点一次换一批,免费即时。</p>
+    <div class="gen-form">
+      <div class="gen-field">
+        <label for="gen-product">产品 / 品牌</label>
+        <input id="gen-product" type="text" placeholder="例如:笛梵防脱洗发水">
+      </div>
+      <div class="gen-field">
+        <label for="gen-pain">目标人群 / 痛点</label>
+        <input id="gen-pain" type="text" placeholder="例如:洗完当天就塌、发际线后移">
+      </div>
+      <div class="gen-field">
+        <label for="gen-benefit">核心卖点 / 利益点</label>
+        <input id="gen-benefit" type="text" placeholder="例如:72 小时持续蓬松">
+      </div>
+      <div class="gen-field">
+        <label for="gen-industry">所属行业(可选)</label>
+        <select id="gen-industry"><option value="">不限</option></select>
+      </div>
+    </div>
+    <button class="gen-btn" id="gen-btn">生成 6 条创意钩子</button>
+    <div class="gen-results" id="gen-results">
+      <p class="empty-tip" style="grid-column:1/-1;padding:40px 0;">填写产品信息后点击生成,或直接留空试试看效果</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CASES 案例库 ============ -->
+<section id="cases">
+  <div class="sec-inner">
+    <p class="sec-eyebrow">Case Library</p>
+    <h2 class="sec-title serif">品牌信息流钩子案例</h2>
+    <p class="sec-desc">按公开投放素材的常见开场整理与复刻,保留"前三秒口播 + 画面 + 拆解"三要素,仅作学习拆解用途。</p>
+
+    <div class="filter-bar">
+      <div class="filter-row">
+        <span class="f-cat">类型</span>
+        <div id="filter-type" style="display:flex;gap:8px;flex-wrap:wrap;"></div>
+      </div>
+      <div class="filter-row">
+        <span class="f-cat">行业</span>
+        <div id="filter-industry" style="display:flex;gap:8px;flex-wrap:wrap;"></div>
+      </div>
+      <div class="filter-row">
+        <span class="f-cat">搜索</span>
+        <input class="search-input" id="search" type="search" placeholder="搜品牌 / 关键词,如:洗发水、划走、痛点…">
+      </div>
+      <p class="result-count">共 <b id="count">0</b> 条案例</p>
+    </div>
+
+    <div class="cases-grid" id="cases-grid"></div>
+  </div>
+</section>
+
+<!-- ============ TVC 品牌广告文案 ============ -->
+<section id="tvc" class="sec-alt">
+  <div class="sec-inner">
+    <p class="sec-eyebrow">Brand TVC Copywriting</p>
+    <h2 class="sec-title serif">品牌广告 TVC 文案案例</h2>
+    <p class="sec-desc">信息流的钩子只负责 3 秒,TVC(电视广告片 / 长视频营销广告)负责把钩子拉长成一条完整的说服链路。以斐萃(FineNutri)为代表——这类靠抖音信息流起量的品牌,TVC 依然遵循"钩子先行、逐段兑现"的结构,只是把 3 秒拆成了 4 个阶段。以下按公开投放风格整理复刻,仅作学习拆解用途。</p>
+    <div class="trend-meta">
+      <span class="trend-date" id="tvc-date"></span>
+      <span class="trend-tip">脚本库共 <b id="tvc-total"></b> 条 · 每日 00:00 自动轮换,今日精选 <b>4</b> 条</span>
+    </div>
+    <div class="tvc-list" id="tvc-list"></div>
+  </div>
+</section>
+
+<!-- ============ CHECKLIST 自检清单 ============ -->
+<section id="checklist">
+  <div class="sec-inner">
+    <p class="sec-eyebrow">Checklist</p>
+    <h2 class="sec-title serif">发布前的三秒自检</h2>
+    <p class="sec-desc">脚本写完、粗剪出片后,用这八条过一遍开头。</p>
+    <div class="check-list">
+      <div class="check-item"><span class="c-no serif">1</span><p><b>第一帧像不像广告?</b>像,就换画面——logo、包装盒、影棚灯光尽量后置。</p></div>
+      <div class="check-item"><span class="c-no serif">2</span><p><b>第一句话删掉会损失什么?</b>没损失就删,直到每个字都在传递信息。</p></div>
+      <div class="check-item"><span class="c-no serif">3</span><p><b>目标用户能否在 3 秒内对号入座?</b>钩子里要有他的身份、场景或痛点。</p></div>
+      <div class="check-item"><span class="c-no serif">4</span><p><b>有没有留下未完成感?</b>悬念、转折、问题,总要有一个没说完。</p></div>
+      <div class="check-item"><span class="c-no serif">5</span><p><b>静音状态下能否看懂?</b>大字幕、画面动作要独立成立,多数用户静音刷。</p></div>
+      <div class="check-item"><span class="c-no serif">6</span><p><b>钩子在 5 秒内兑现了吗?</b>承诺不兑现,完播和转化会双杀。</p></div>
+      <div class="check-item"><span class="c-no serif">7</span><p><b>同一个卖点,备了几个开头?</b>至少 3 个不同钩子混剪 A/B 跑量。</p></div>
+      <div class="check-item"><span class="c-no serif">8</span><p><b>合规吗?</b>疗效承诺、极限词、贬损竞品都过不了审,钩子再好也白拍。</p></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="foot-inner">
+    <p>© 2026 林怡杰 · 信息流钩子案例库 · 案例文案依据公开投放素材整理复刻,仅供学习拆解 · 数据更新于 <span id="data-updated"></span></p>
+    <a href="index.html">← 返回作品集主站</a>
+  </div>
+</footer>
+
+<script src="data/hooks-data.js"></script>
+<script>
+/* ============ 数据:钩子类型 ============ */
+const HOOK_TYPES = [
+  { name: '悬念好奇', formula: '反常事实 + 不说答案', desc: '抛出一个违反常识或信息不完整的开头,用户为了"知道答案"而停留。', eg: '"让全网排队两小时的这杯,到底加了什么?"' },
+  { name: '痛点直击', formula: '你的问题 + 我看见了', desc: '第一句话说出目标用户正在经历的具体麻烦,越具体越扎心。', eg: '"头发一天不洗就塌就油,扎起来全是碎发?"' },
+  { name: '身份点名', formula: '叫住某类人 + 别划走', desc: '直接点名人群身份,让目标用户瞬间对号入座,非目标用户划走反而提升人群精度。', eg: '"油痘皮先别划走,这条视频能帮你省三千块。"' },
+  { name: '利益承诺', formula: '具体好处 + 低门槛', desc: '开头就给出可量化、可想象的收益,并暗示获取门槛很低。', eg: '"15 分钟,在家做出一盘米其林同款。"' },
+  { name: '反差冲突', formula: '常识 A,但其实 B', desc: '先立一个大众认知,再当场推翻,认知失衡带来强停留。', eg: '"几十块的吹风机和三千块的,差距到底在哪?拆开看。"' },
+  { name: '恐惧损失', formula: '你正在失去 + 而你不知道', desc: '指出用户正在发生的损失或风险,损失厌恶比获得感更能留人,注意合规边界。', eg: '"刷牙越用力,牙齿掉得越早。"' },
+  { name: '数字冲击', formula: '极端数字 + 反差单位', desc: '用具体、极端、可对比的数字制造冲击,数字自带可信感。', eg: '"紫外线最强的两小时,皮肤老化速度是平时的 3 倍。"' },
+  { name: '权威背书', formula: '权威身份 + 内部视角', desc: '借专家、机构、从业者身份开场,用"内部人才知道"的视角制造信息差。', eg: '"皮肤科医生自己烂脸的时候,用什么?"' },
+  { name: '场景代入', formula: '具体时刻 + 熟悉细节', desc: '还原一个用户每天都在经历的具体时刻,先共情再带出产品。', eg: '"早上 7 点 50,离打卡还有 10 分钟。"' },
+  { name: '争议站队', formula: '争议话题 + 逼你表态', desc: '抛出有分歧的观点让用户想反驳或认同,评论区互动反哺流量。', eg: '"0 糖是不是智商税?配料表一行行讲给你听。"' },
+  { name: '剧情冲突', formula: '戏剧冲突 + 强情绪', desc: '用短剧式冲突开场(争吵、意外、反转前夜),先看戏再带货。', eg: '"老板说这批凤爪卖不掉就扣我工资——救我。"' },
+  { name: '福利促销', formula: '大让利 + 限时限地', desc: '直接把优惠拍在脸上,数字要具体,限制条件制造紧迫感。', eg: '"全场任意一杯,今天只要一块钱。"' },
+];
+
+/* 案例 / 热门 / TVC 数据在 data/hooks-data.js,由 GitHub Actions 每日自动更新 */
+const CASES = HOOKS_DATA.cases;
+const TRENDING = HOOKS_DATA.trending;
+const TVC = HOOKS_DATA.tvc;
+
+/* ============ 渲染:钩子类型 ============ */
+const typesGrid = document.getElementById('types-grid');
+HOOK_TYPES.forEach((t, i) => {
+  const el = document.createElement('div');
+  el.className = 'type-card';
+  el.innerHTML = `
+    <div class="t-no serif">${String(i + 1).padStart(2, '0')}</div>
+    <h3>${t.name}</h3>
+    <div class="t-formula">${t.formula}</div>
+    <p>${t.desc}</p>
+    <div class="t-eg"><b>示例</b> ${t.eg}</div>`;
+  el.addEventListener('click', () => {
+    setFilter('type', t.name);
+    document.getElementById('cases').scrollIntoView({ behavior: 'smooth' });
+  });
+  typesGrid.appendChild(el);
+});
+
+/* ============ 筛选状态 ============ */
+const state = { type: '全部', industry: '全部', q: '' };
+const industries = ['全部', ...new Set(CASES.map(c => c.industry))];
+const typeNames = ['全部', ...HOOK_TYPES.map(t => t.name)];
+
+function buildChips(containerId, values, key) {
+  const box = document.getElementById(containerId);
+  values.forEach(v => {
+    const b = document.createElement('button');
+    b.className = 'chip' + (v === '全部' ? ' on' : '');
+    b.textContent = v;
+    b.dataset.val = v;
+    b.addEventListener('click', () => setFilter(key, v));
+    box.appendChild(b);
+  });
+}
+buildChips('filter-type', typeNames, 'type');
+buildChips('filter-industry', industries, 'industry');
+
+function setFilter(key, val) {
+  state[key] = val;
+  const boxId = key === 'type' ? 'filter-type' : 'filter-industry';
+  document.querySelectorAll(`#${boxId} .chip`).forEach(c => c.classList.toggle('on', c.dataset.val === val));
+  renderCases();
+}
+
+document.getElementById('search').addEventListener('input', e => {
+  state.q = e.target.value.trim();
+  renderCases();
+});
+
+/* ============ 渲染:案例 ============ */
+const casesGrid = document.getElementById('cases-grid');
+function renderCases() {
+  const q = state.q.toLowerCase();
+  const list = CASES.filter(c =>
+    (state.type === '全部' || c.type === state.type) &&
+    (state.industry === '全部' || c.industry === state.industry) &&
+    (!q || (c.brand + c.hook + c.note + c.visual + c.type + c.industry).toLowerCase().includes(q))
+  );
+  document.getElementById('count').textContent = list.length;
+  casesGrid.innerHTML = '';
+  if (!list.length) {
+    casesGrid.innerHTML = '<p class="empty-tip">没有匹配的案例 —— 换个关键词或清空筛选试试</p>';
+    return;
+  }
+  list.forEach(c => {
+    const el = document.createElement('article');
+    el.className = 'case-card';
+    el.innerHTML = `
+      <div class="case-head">
+        <div class="case-brand">${c.brand}</div>
+        <div class="case-tags"><span class="tag gold">${c.type}</span><span class="tag">${c.industry}</span></div>
+      </div>
+      <div class="case-hook">${c.hook}</div>
+      <p class="case-visual"><b>画面</b> · ${c.visual}</p>
+      <p class="case-note"><b>拆解</b> · ${c.note}</p>
+      <div class="case-foot"><button class="copy-btn">复制文案</button></div>`;
+    el.querySelector('.copy-btn').addEventListener('click', function () {
+      navigator.clipboard.writeText(c.hook).then(() => {
+        this.textContent = '已复制';
+        this.classList.add('done');
+        setTimeout(() => { this.textContent = '复制文案'; this.classList.remove('done'); }, 1600);
+      });
+    });
+    casesGrid.appendChild(el);
+  });
+}
+renderCases();
+document.getElementById('stat-cases').textContent = CASES.length;
+document.getElementById('stat-industries').textContent = industries.length - 1;
+document.getElementById('data-updated').textContent = HOOKS_DATA.updated;
+
+/* ============ 今日热门:按日期做种子轮换 ============ */
+function seedFromDate(d) {
+  const s = `${d.getFullYear()}${d.getMonth() + 1}${d.getDate()}`;
+  let h = 0;
+  for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0;
+  return h;
+}
+function mulberry32(seed) {
+  let a = seed;
+  return function () {
+    a |= 0; a = (a + 0x6D2B79F5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+function seededPick(arr, n, seed) {
+  const rnd = mulberry32(seed);
+  const idx = arr.map((_, i) => i);
+  for (let i = idx.length - 1; i > 0; i--) {
+    const j = Math.floor(rnd() * (i + 1));
+    [idx[i], idx[j]] = [idx[j], idx[i]];
+  }
+  return idx.slice(0, n).map(i => arr[i]);
+}
+
+const today = new Date();
+document.getElementById('trend-date').textContent = today.toLocaleDateString('zh-CN', { year: 'numeric', month: '2-digit', day: '2-digit' });
+document.getElementById('trend-day').textContent = '#' + String(seedFromDate(today) % 9000 + 1000);
+
+const todayTrending = seededPick(TRENDING, 6, seedFromDate(today));
+const trendGrid = document.getElementById('trend-grid');
+todayTrending.forEach((t, i) => {
+  const el = document.createElement('div');
+  el.className = 'trend-card';
+  el.innerHTML = `
+    <span class="trend-rank serif">NO.${i + 1}</span>
+    <div class="trend-type">${t.type}</div>
+    <div class="trend-hook">${t.hook}</div>
+    <p class="trend-reason">${t.reason}</p>`;
+  trendGrid.appendChild(el);
+});
+
+/* ============ AI 创意钩子生成器 ============ */
+const genIndustrySelect = document.getElementById('gen-industry');
+industries.filter(v => v !== '全部').forEach(v => {
+  const opt = document.createElement('option');
+  opt.value = v; opt.textContent = v;
+  genIndustrySelect.appendChild(opt);
+});
+
+const GEN_NUM = [3, 5, 7, 9, 15, 21, 30, 49, 72, 100];
+const GEN_UNIT = ['天', '分钟', '块钱', '厘米', '斤', '度'];
+const GEN_YEARS = [3, 5, 8, 10, 12, 15];
+const GEN_SCENES = ['凌晨一点还没睡着的时候', '早上赶时间出门前的五分钟', '加班到赶不上末班地铁的那晚', '周末窝在沙发里刷手机的时候', '出差路上拖着行李箱的间隙'];
+const GEN_DRAMA = ['被同事当面吐槽的那天', '闺蜜劝我别乱花钱的那次', '以为自己这辈子都好不了的时候', '在镜子前站了十分钟不想出门的早上'];
+const GEN_PROMO = ['直降三成', '买一送一', '限时一折', '立减五十', '前一百名免单'];
+const GEN_CLAIM = ['没人告诉你', '很少有人知道', '大多数人都想错了', '评论区吵翻了'];
+function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+
+const GEN_TEMPLATES = {
+  '悬念好奇': ctx => `${pick(GEN_CLAIM)}:${ctx.pain}这件事,答案可能就藏在${ctx.product}里。`,
+  '痛点直击': ctx => `${ctx.pain}?别划走,这条视频就是为你准备的。`,
+  '身份点名': ctx => `还在为${ctx.pain}发愁的朋友,先别划走,${ctx.product}能帮你${ctx.benefit}。`,
+  '利益承诺': ctx => `${pick(GEN_NUM)} 天,把${ctx.pain}变成${ctx.benefit}——靠的就是${ctx.product}。`,
+  '反差冲突': ctx => `别人说${ctx.pain}只能忍着,但${ctx.product}用 ${pick(GEN_NUM)} 天证明:其实可以${ctx.benefit}。`,
+  '恐惧损失': ctx => `你正在经历${ctx.pain},可能自己都没察觉——直到${ctx.benefit}变成一件奢侈的事。`,
+  '数字冲击': ctx => `${pick(GEN_NUM)} ${pick(GEN_UNIT)},就是${ctx.pain}和${ctx.benefit}之间唯一的距离。`,
+  '权威背书': ctx => `做了 ${pick(GEN_YEARS)} 年${ctx.industry},我只会把${ctx.product}推荐给真正被${ctx.pain}困扰的人。`,
+  '场景代入': ctx => `${pick(GEN_SCENES)},${ctx.pain}的那一刻,我用${ctx.product}解决了。`,
+  '争议站队': ctx => `${ctx.product}到底是不是智商税?今天把${ctx.benefit}摆在你面前,你自己判断。`,
+  '剧情冲突': ctx => `${pick(GEN_DRAMA)}——直到${ctx.product}出现,一切都变了。`,
+  '福利促销': ctx => `还在被${ctx.pain}困扰的朋友,${ctx.product}今天${pick(GEN_PROMO)},仅限今天。`,
+};
+
+function generateHooks() {
+  const ctx = {
+    product: document.getElementById('gen-product').value.trim() || 'TA 家这款产品',
+    pain: document.getElementById('gen-pain').value.trim() || '你正在纠结的问题',
+    benefit: document.getElementById('gen-benefit').value.trim() || '看得见的改变',
+    industry: document.getElementById('gen-industry').value || '这行',
+  };
+  const types = Object.keys(GEN_TEMPLATES);
+  for (let i = types.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [types[i], types[j]] = [types[j], types[i]];
+  }
+  const picked = types.slice(0, 6);
+  const genResults = document.getElementById('gen-results');
+  genResults.innerHTML = '';
+  picked.forEach(type => {
+    const text = GEN_TEMPLATES[type](ctx);
+    const el = document.createElement('div');
+    el.className = 'gen-card';
+    el.innerHTML = `
+      <div class="gen-type">${type}</div>
+      <div class="gen-hook">${text}</div>
+      <div class="case-foot"><button class="copy-btn">复制文案</button></div>`;
+    el.querySelector('.copy-btn').addEventListener('click', function () {
+      navigator.clipboard.writeText(text).then(() => {
+        this.textContent = '已复制';
+        this.classList.add('done');
+        setTimeout(() => { this.textContent = '复制文案'; this.classList.remove('done'); }, 1600);
+      });
+    });
+    genResults.appendChild(el);
+  });
+}
+document.getElementById('gen-btn').addEventListener('click', generateHooks);
+
+/* ============ 渲染:品牌 TVC 文案案例(每日轮换) ============ */
+document.getElementById('tvc-date').textContent = today.toLocaleDateString('zh-CN', { year: 'numeric', month: '2-digit', day: '2-digit' });
+document.getElementById('tvc-total').textContent = TVC.length;
+const todayTvc = seededPick(TVC, 4, seedFromDate(today) + 7);
+const tvcList = document.getElementById('tvc-list');
+todayTvc.forEach(v => {
+  const el = document.createElement('article');
+  el.className = 'tvc-card';
+  const fullScript = v.beats.map(b => `[${b.time} ${b.stage}] ${b.text}`).join('\n');
+  el.innerHTML = `
+    <div class="tvc-head">
+      <div class="tvc-brand">${v.brand}</div>
+      <div class="tvc-tags"><span class="tag gold">${v.industry}</span><span class="tag">${v.duration}</span></div>
+    </div>
+    <div class="tvc-timeline">
+      ${v.beats.map(b => `
+        <div class="tvc-beat">
+          <span class="beat-time serif">${b.time}</span>
+          <div class="beat-stage">${b.stage}</div>
+          <p class="beat-text">${b.text}</p>
+        </div>`).join('')}
+    </div>
+    <p class="tvc-insight"><b>拆解</b> · ${v.insight}</p>
+    <div class="tvc-foot"><button class="copy-btn">复制脚本</button></div>`;
+  el.querySelector('.copy-btn').addEventListener('click', function () {
+    navigator.clipboard.writeText(fullScript).then(() => {
+      this.textContent = '已复制';
+      this.classList.add('done');
+      setTimeout(() => { this.textContent = '复制脚本'; this.classList.remove('done'); }, 1600);
+    });
+  });
+  tvcList.appendChild(el);
+});
+</script>
+
+</body>
+</html>
