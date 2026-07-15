@@ -148,22 +148,12 @@
   }
   .btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
 
-  .hero-scroll {
-    position: absolute; bottom: 70px; left: 50%; transform: translateX(-50%); z-index: 4;
-    display: flex; flex-direction: column; align-items: center; gap: 10px;
-    opacity: 0; animation: fadeUp .9s 1s forwards;
-  }
-  .hero-scroll span { font-size: 10px; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); }
-  .scroll-line { width: 1px; height: 44px; background: linear-gradient(var(--gold), transparent); animation: scrollPulse 2s infinite; }
-
   @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
-  @keyframes scrollPulse { 0%,100% { opacity: .3; } 50% { opacity: 1; } }
 
   /* ============ SECTION FRAME ============ */
   section { position: relative; }
   .sec-pad { padding: 120px 56px; max-width: 1400px; margin: 0 auto; }
   .sec-head { display: flex; align-items: baseline; gap: 24px; margin-bottom: 80px; }
-  .sec-index { font-size: 13px; letter-spacing: .2em; color: var(--gold); font-weight: 400; }
   .sec-title { font-size: clamp(32px, 5vw, 56px); font-weight: 300; color: var(--text); letter-spacing: .01em; }
   .sec-rule { flex: 1; height: 1px; background: linear-gradient(to right, var(--border2), transparent); margin-left: 16px; align-self: center; }
 
@@ -233,13 +223,6 @@
   .vthumb.land { aspect-ratio: 16/9; }
   .vthumb video { width: 100%; height: 100%; object-fit: cover; pointer-events: none; filter: brightness(.8) saturate(.88); transition: filter .35s; }
   .vcard:hover .vthumb video { filter: brightness(.96) saturate(1.06); }
-  .vplaceholder {
-    width: 100%; height: 100%; display: flex; flex-direction: column;
-    align-items: center; justify-content: center; gap: 14px;
-    background: linear-gradient(150deg, #141418, #18130f);
-  }
-  .vplaceholder svg { opacity: .22; }
-  .vplaceholder span { font-size: 10px; color: var(--faint); letter-spacing: .18em; }
   .vplay { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity .3s; background: rgba(0,0,0,.25); }
   .vcard:hover .vplay { opacity: 1; }
   .vplay-circle {
@@ -247,13 +230,17 @@
     display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,.4); backdrop-filter: blur(4px);
   }
   .vplay-circle svg { margin-left: 3px; }
-  .vlabel { padding: 15px 17px; border-top: 1px solid var(--border); }
-  .vname { font-size: 13px; color: var(--text); line-height: 1.4; }
 
-  .vcard-soon { cursor: default; }
-  .vcard-soon:hover { transform: none; border-color: var(--border); }
-  .vplaceholder-soon { background: linear-gradient(150deg, #0f0f12, #121013); }
-  .vplaceholder-soon span { color: #4a443d; }
+  /* ============ AIGC SERIES ============ */
+  .vfeature-wrap { margin-left: 138px; margin-bottom: 18px; }
+  .vthumb.wide { aspect-ratio: 21/9; }
+  .vgrid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-left: 138px; margin-bottom: 18px; }
+  .vgrid-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; margin-left: 138px; }
+  .vgrid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; margin-left: 138px; }
+  .vgrid-mixed { align-items: start; }
+  .vlabel { padding: 15px 17px; border-top: 1px solid var(--border); display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+  .vname { font-size: 13px; color: var(--text); line-height: 1.4; }
+  .vmeta { font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
 
   /* ============ CONTACT ============ */
   .contact { background: var(--bg); position: relative; overflow: hidden; }
@@ -392,6 +379,11 @@
     .strengths-grid { grid-template-columns: 1fr; }
     .tl-item { grid-template-columns: 1fr; gap: 16px; }
     .vgrid { margin-left: 0; }
+    .vgrid-4 { margin-left: 0; grid-template-columns: repeat(2, 1fr); }
+    .vgrid-5 { margin-left: 0; grid-template-columns: repeat(3, 1fr); }
+    .vgrid-2 { margin-left: 0; grid-template-columns: 1fr; }
+    .vfeature-wrap { margin-left: 0; }
+    .vthumb.wide { aspect-ratio: 16/9; }
   }
   @media (max-width: 768px) {
     nav { padding: 16px 24px; }
@@ -409,6 +401,7 @@
   }
   @media (max-width: 480px) {
     .vgrid { grid-template-columns: repeat(2, 1fr); }
+    .vgrid-5 { grid-template-columns: repeat(2, 1fr); }
     .nav-links { display: none; }
     .nav-burger { display: flex; }
   }
@@ -454,6 +447,104 @@
     *, *::before, *::after { animation: none !important; transition: none !important; }
     .reveal { opacity: 1; transform: none; }
   }
+
+  /* ============ THUMBNAIL IMAGE ============ */
+  .vthumb { overflow: hidden; }
+  .vthumb img {
+    width: 100%; height: 100%; object-fit: cover;
+    position: absolute; inset: 0; pointer-events: none;
+    filter: brightness(.68) saturate(.88) contrast(1.06);
+    transition: filter .55s ease, transform .7s cubic-bezier(.2,.8,.2,1);
+    z-index: 0;
+  }
+  .vcard:hover .vthumb img {
+    filter: brightness(.92) saturate(1.14) contrast(1.03);
+    transform: scale(1.06);
+  }
+  /* Cinematic gradient overlay */
+  .vthumb::before {
+    content: ''; position: absolute; inset: 0; z-index: 2; pointer-events: none;
+    background: linear-gradient(to top, rgba(4,4,6,.92) 0%, rgba(4,4,6,.3) 38%, transparent 62%);
+    transition: opacity .45s;
+  }
+  .vcard:hover .vthumb::before { opacity: .6; }
+
+  /* ============ ENHANCED CARD HOVER ============ */
+  .vcard {
+    transition: transform .4s cubic-bezier(.2,.8,.2,1), border-color .35s, box-shadow .45s;
+  }
+  .vcard:hover {
+    transform: translateY(-10px) scale(1.012);
+    border-color: rgba(201,169,106,.55) !important;
+    box-shadow: 0 22px 55px rgba(0,0,0,.6), 0 0 0 1px rgba(201,169,106,.2), 0 0 40px rgba(201,169,106,.06);
+  }
+
+  /* ============ PLAY BUTTON GLOW ============ */
+  .vplay { z-index: 4; }
+  .vplay-circle { width: 58px; height: 58px; transition: all .3s ease; }
+  .vcard:hover .vplay-circle {
+    border-color: var(--gold);
+    background: rgba(201,169,106,.18);
+    box-shadow: 0 0 0 10px rgba(201,169,106,0), 0 0 28px rgba(201,169,106,.45);
+    transform: scale(1.08);
+  }
+
+  /* ============ SERIES NUMBER ATMOSPHERE ============ */
+  .series-num {
+    opacity: .55;
+    text-shadow: 0 0 60px rgba(122,59,59,.45);
+    transition: opacity .5s, text-shadow .5s;
+  }
+  .series.in .series-num {
+    opacity: 1;
+    text-shadow: 0 0 20px rgba(122,59,59,1), 0 0 60px rgba(122,59,59,.35), 0 0 100px rgba(122,59,59,.12);
+  }
+
+  /* ============ STRENGTH CARDS ENHANCED ============ */
+  .strength::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse 80% 65% at 20% 80%, rgba(201,169,106,.06), transparent);
+    opacity: 0; transition: opacity .45s;
+  }
+  .strength:hover::before { opacity: 1; }
+  .strength-title { transition: color .3s; }
+  .strength:hover .strength-title { color: var(--gold); }
+
+  /* ============ TIMELINE ENHANCED ============ */
+  .tl-company { transition: color .3s; }
+  .tl-item:hover .tl-company { color: var(--gold); }
+
+  /* ============ SEC-RULE GLOW ============ */
+  .sec-rule {
+    background: linear-gradient(to right, var(--gold), rgba(201,169,106,.3), transparent);
+    height: 1px;
+  }
+
+  /* ============ HERO BG ENHANCED AURORA ============ */
+  @keyframes aurora {
+    0%, 100% { transform: translate(0,0) scale(1); opacity: .85; }
+    20% { transform: translate(5%,-5%) scale(1.14); opacity: 1; }
+    50% { transform: translate(-4%,5%) scale(1.08); opacity: .88; }
+    80% { transform: translate(6%,1%) scale(1.11); opacity: .96; }
+  }
+
+  /* ============ CONTACT CLINK HOVER GLOW ============ */
+  .clink { transition: border-color .25s, background .25s, box-shadow .25s; }
+  .clink:hover { box-shadow: 0 0 20px rgba(201,169,106,.08); }
+
+  /* ============ SCROLL-TO-TOP BTN ============ */
+  #back-top {
+    position: fixed; bottom: 32px; right: 32px; z-index: 200;
+    width: 44px; height: 44px; border: 1px solid var(--border2);
+    background: var(--card); cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none;
+    transition: opacity .3s, border-color .25s, background .25s;
+  }
+  #back-top.show { opacity: 1; pointer-events: auto; }
+  #back-top:hover { border-color: var(--gold); background: var(--surface); }
+  #back-top svg { stroke: var(--text-dim); transition: stroke .25s; }
+  #back-top:hover svg { stroke: var(--gold); }
 </style>
 </head>
 <body>
@@ -465,6 +556,7 @@
     <li><a href="#profile">关于</a></li>
     <li><a href="#strengths">优势</a></li>
     <li><a href="#works">作品</a></li>
+    <li><a href="#aigc">AIGC</a></li>
     <li><a href="#experience">经历</a></li>
     <li><a href="#contact">联系</a></li>
   </ul>
@@ -481,6 +573,7 @@
   <a href="#profile" onclick="toggleMobileNav()">关于</a>
   <a href="#strengths" onclick="toggleMobileNav()">优势</a>
   <a href="#works" onclick="toggleMobileNav()">作品</a>
+  <a href="#aigc" onclick="toggleMobileNav()">AIGC</a>
   <a href="#experience" onclick="toggleMobileNav()">经历</a>
   <a href="#contact" onclick="toggleMobileNav()">联系</a>
 </div>
@@ -489,7 +582,7 @@
 <header class="hero">
   <div class="hero-bg"></div>
   <div class="hero-inner">
-    <div class="hero-eyebrow">资深摄像师 · 广州</div>
+    <div class="hero-eyebrow">资深摄像师 · AIGC 创作者 · 广州</div>
     <h1 class="serif">林<em>怡杰</em></h1>
     <p class="hero-tagline">影视制作专业出身，4 年拍摄经验，深耕品牌视觉内容创作。<br>独立完成品牌宣传片、产品发布会、信息流短视频从拍摄到后期剪辑的全流程交付。</p>
     <div class="hero-metrics">
@@ -503,17 +596,12 @@
       <a class="btn-ghost" href="#contact">联系我</a>
     </div>
   </div>
-  <div class="hero-scroll">
-    <span>Scroll</span>
-    <div class="scroll-line"></div>
-  </div>
 </header>
 
 <!-- ============ PROFILE ============ -->
 <section class="profile" id="profile">
   <div class="sec-pad">
     <div class="sec-head reveal">
-      <span class="sec-index">01 —</span>
       <h2 class="sec-title serif">关于我</h2>
       <div class="sec-rule"></div>
     </div>
@@ -555,7 +643,6 @@
 <section id="strengths">
   <div class="sec-pad">
     <div class="sec-head reveal">
-      <span class="sec-index">02 —</span>
       <h2 class="sec-title serif">核心优势</h2>
       <div class="sec-rule"></div>
     </div>
@@ -588,7 +675,6 @@
 <section class="works" id="works">
   <div class="sec-pad">
     <div class="sec-head reveal">
-      <span class="sec-index">03 —</span>
       <h2 class="sec-title serif">作品系列</h2>
       <div class="sec-rule"></div>
     </div>
@@ -600,27 +686,49 @@
         <div class="series-info">
           <div class="series-name">信息流广告</div>
           <div class="series-sub">针对千川投放优化的商业短视频，注重黄金 3 秒钩子、口播节奏与产品卖点视觉化，配合投放数据动态调整画面节奏。</div>
-          <div class="series-tag">6 支作品</div>
+          <div class="series-tag">10 支作品</div>
         </div>
       </div>
-      <div class="vgrid">
-        <div class="vcard" data-bvid="BV1sRKo6WEzR" data-orient="portrait" onclick="openModal(this)">
-          <div class="vthumb"><div class="vplaceholder"><svg width="42" height="42" fill="none" stroke="#c9a96a" stroke-width="1" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M10 9l5 3-5 3V9z"/></svg><span>VIDEO</span></div><div class="vplay"><div class="vplay-circle"><svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+      <div class="vgrid-5">
+        <div class="vcard" data-src="assets/feed/feed-01.mp4" data-orient="portrait" onclick="openModal(this)">
+          <div class="vthumb"><video muted loop playsinline preload="none" poster="assets/feed/posters/feed-01.jpg"><source src="assets/feed/feed-01.mp4" type="video/mp4"></video><div class="vplay"><div class="vplay-circle"><svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+          <div class="vlabel"><span class="vname">泉立方 · 创意开箱</span></div>
         </div>
-        <div class="vcard" data-bvid="BV12XKo6RENE" data-orient="portrait" onclick="openModal(this)">
-          <div class="vthumb"><div class="vplaceholder"><svg width="42" height="42" fill="none" stroke="#c9a96a" stroke-width="1" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M10 9l5 3-5 3V9z"/></svg><span>VIDEO</span></div><div class="vplay"><div class="vplay-circle"><svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+        <div class="vcard" data-src="assets/feed/feed-02.mp4" data-orient="portrait" onclick="openModal(this)">
+          <div class="vthumb"><video muted loop playsinline preload="none" poster="assets/feed/posters/feed-02.jpg"><source src="assets/feed/feed-02.mp4" type="video/mp4"></video><div class="vplay"><div class="vplay-circle"><svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+          <div class="vlabel"><span class="vname">泉立方 · 工厂溯源</span></div>
         </div>
-        <div class="vcard" data-bvid="BV1WZKo6HEw4" data-orient="portrait" onclick="openModal(this)">
-          <div class="vthumb"><div class="vplaceholder"><svg width="42" height="42" fill="none" stroke="#c9a96a" stroke-width="1" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M10 9l5 3-5 3V9z"/></svg><span>VIDEO</span></div><div class="vplay"><div class="vplay-circle"><svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+        <div class="vcard" data-src="assets/feed/feed-03.mp4" data-orient="portrait" onclick="openModal(this)">
+          <div class="vthumb"><video muted loop playsinline preload="none" poster="assets/feed/posters/feed-03.jpg"><source src="assets/feed/feed-03.mp4" type="video/mp4"></video><div class="vplay"><div class="vplay-circle"><svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+          <div class="vlabel"><span class="vname">泉立方 · 剧情口播</span></div>
         </div>
-        <div class="vcard" data-bvid="BV1pZKo6HE62" data-orient="portrait" onclick="openModal(this)">
-          <div class="vthumb"><div class="vplaceholder"><svg width="42" height="42" fill="none" stroke="#c9a96a" stroke-width="1" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M10 9l5 3-5 3V9z"/></svg><span>VIDEO</span></div><div class="vplay"><div class="vplay-circle"><svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+        <div class="vcard" data-src="assets/feed/feed-04.mp4" data-orient="portrait" onclick="openModal(this)">
+          <div class="vthumb"><video muted loop playsinline preload="none" poster="assets/feed/posters/feed-04.jpg"><source src="assets/feed/feed-04.mp4" type="video/mp4"></video><div class="vplay"><div class="vplay-circle"><svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+          <div class="vlabel"><span class="vname">泉立方 · 达人种草</span></div>
         </div>
-        <div class="vcard" data-bvid="BV1PdKo69EkB" data-orient="portrait" onclick="openModal(this)">
-          <div class="vthumb"><div class="vplaceholder"><svg width="42" height="42" fill="none" stroke="#c9a96a" stroke-width="1" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M10 9l5 3-5 3V9z"/></svg><span>VIDEO</span></div><div class="vplay"><div class="vplay-circle"><svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+        <div class="vcard" data-src="assets/feed/feed-05.mp4" data-orient="portrait" onclick="openModal(this)">
+          <div class="vthumb"><video muted loop playsinline preload="none" poster="assets/feed/posters/feed-05.jpg"><source src="assets/feed/feed-05.mp4" type="video/mp4"></video><div class="vplay"><div class="vplay-circle"><svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+          <div class="vlabel"><span class="vname">谛梵 · 达人口播</span></div>
         </div>
-        <div class="vcard" data-bvid="BV1ydKo6XEeV" data-orient="portrait" onclick="openModal(this)">
-          <div class="vthumb"><div class="vplaceholder"><svg width="42" height="42" fill="none" stroke="#c9a96a" stroke-width="1" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M10 9l5 3-5 3V9z"/></svg><span>VIDEO</span></div><div class="vplay"><div class="vplay-circle"><svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+        <div class="vcard" data-src="assets/feed/feed-06.mp4" data-orient="portrait" onclick="openModal(this)">
+          <div class="vthumb"><video muted loop playsinline preload="none" poster="assets/feed/posters/feed-06.jpg"><source src="assets/feed/feed-06.mp4" type="video/mp4"></video><div class="vplay"><div class="vplay-circle"><svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+          <div class="vlabel"><span class="vname">泉立方 · 产品特写</span></div>
+        </div>
+        <div class="vcard" data-src="assets/feed/feed-07.mp4" data-orient="portrait" onclick="openModal(this)">
+          <div class="vthumb"><video muted loop playsinline preload="none" poster="assets/feed/posters/feed-07.jpg"><source src="assets/feed/feed-07.mp4" type="video/mp4"></video><div class="vplay"><div class="vplay-circle"><svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+          <div class="vlabel"><span class="vname">谛梵 · 情景口播</span></div>
+        </div>
+        <div class="vcard" data-src="assets/feed/feed-08.mp4" data-orient="portrait" onclick="openModal(this)">
+          <div class="vthumb"><video muted loop playsinline preload="none" poster="assets/feed/posters/feed-08.jpg"><source src="assets/feed/feed-08.mp4" type="video/mp4"></video><div class="vplay"><div class="vplay-circle"><svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+          <div class="vlabel"><span class="vname">香氛 · 情侣剧情</span></div>
+        </div>
+        <div class="vcard" data-src="assets/feed/feed-09.mp4" data-orient="portrait" onclick="openModal(this)">
+          <div class="vthumb"><video muted loop playsinline preload="none" poster="assets/feed/posters/feed-09.jpg"><source src="assets/feed/feed-09.mp4" type="video/mp4"></video><div class="vplay"><div class="vplay-circle"><svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+          <div class="vlabel"><span class="vname">户外 · 第一视角创意</span></div>
+        </div>
+        <div class="vcard" data-src="assets/feed/feed-10.mp4" data-orient="portrait" onclick="openModal(this)">
+          <div class="vthumb"><video muted loop playsinline preload="none" poster="assets/feed/posters/feed-10.jpg"><source src="assets/feed/feed-10.mp4" type="video/mp4"></video><div class="vplay"><div class="vplay-circle"><svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+          <div class="vlabel"><span class="vname">发膜 · 创意变装</span></div>
         </div>
       </div>
     </div>
@@ -631,27 +739,57 @@
         <div class="series-info">
           <div class="series-name">品牌营销与宣传</div>
           <div class="series-sub">品牌形象与产品营销视频，从脚本策划到拍摄剪辑全案执行，呈现品牌调性与产品视觉语言。</div>
-          <div class="series-tag">6 支作品</div>
+          <div class="series-tag">12 支作品</div>
         </div>
       </div>
       <div class="vgrid">
-        <div class="vcard" data-bvid="BV1tUKo6tEnu" data-orient="landscape" onclick="openModal(this)">
-          <div class="vthumb land"><div class="vplaceholder"><svg width="42" height="42" fill="none" stroke="#c9a96a" stroke-width="1" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M10 9l5 3-5 3V9z"/></svg><span>VIDEO</span></div><div class="vplay"><div class="vplay-circle"><svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+        <div class="vcard" data-src="assets/brand/brand-01.mp4" data-orient="landscape" onclick="openModal(this)">
+          <div class="vthumb land"><video muted loop playsinline preload="none" poster="assets/brand/posters/brand-01.jpg"><source src="assets/brand/brand-01.mp4" type="video/mp4"></video><div class="vplay"><div class="vplay-circle"><svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+          <div class="vlabel"><span class="vname">梵大 · 品牌宣传片</span></div>
         </div>
-        <div class="vcard" data-bvid="BV1bUKo6tEN4" data-orient="landscape" onclick="openModal(this)">
-          <div class="vthumb land"><div class="vplaceholder"><svg width="42" height="42" fill="none" stroke="#c9a96a" stroke-width="1" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M10 9l5 3-5 3V9z"/></svg><span>VIDEO</span></div><div class="vplay"><div class="vplay-circle"><svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+        <div class="vcard" data-src="assets/brand/brand-02.mp4" data-orient="landscape" onclick="openModal(this)">
+          <div class="vthumb land"><video muted loop playsinline preload="none" poster="assets/brand/posters/brand-02.jpg"><source src="assets/brand/brand-02.mp4" type="video/mp4"></video><div class="vplay"><div class="vplay-circle"><svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+          <div class="vlabel"><span class="vname">品牌推广 · 快闪</span></div>
         </div>
-        <div class="vcard" data-bvid="BV1bUKo6tEwm" data-orient="landscape" onclick="openModal(this)">
-          <div class="vthumb land"><div class="vplaceholder"><svg width="42" height="42" fill="none" stroke="#c9a96a" stroke-width="1" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M10 9l5 3-5 3V9z"/></svg><span>VIDEO</span></div><div class="vplay"><div class="vplay-circle"><svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+        <div class="vcard" data-src="assets/brand/brand-03.mp4" data-orient="landscape" onclick="openModal(this)">
+          <div class="vthumb land"><video muted loop playsinline preload="none" poster="assets/brand/posters/brand-03.jpg"><source src="assets/brand/brand-03.mp4" type="video/mp4"></video><div class="vplay"><div class="vplay-circle"><svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+          <div class="vlabel"><span class="vname">摩可多 · 品牌营销片</span></div>
         </div>
-        <div class="vcard" data-bvid="BV1b2Ko6fEFH" data-orient="landscape" onclick="openModal(this)">
-          <div class="vthumb land"><div class="vplaceholder"><svg width="42" height="42" fill="none" stroke="#c9a96a" stroke-width="1" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M10 9l5 3-5 3V9z"/></svg><span>VIDEO</span></div><div class="vplay"><div class="vplay-circle"><svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+        <div class="vcard" data-src="assets/brand/brand-04.mp4" data-orient="landscape" onclick="openModal(this)">
+          <div class="vthumb land"><video muted loop playsinline preload="none" poster="assets/brand/posters/brand-04.jpg"><source src="assets/brand/brand-04.mp4" type="video/mp4"></video><div class="vplay"><div class="vplay-circle"><svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+          <div class="vlabel"><span class="vname">摩可多 · 活动预热片</span></div>
         </div>
-        <div class="vcard" data-bvid="BV12QKo6xEAc" data-orient="landscape" onclick="openModal(this)">
-          <div class="vthumb land"><div class="vplaceholder"><svg width="42" height="42" fill="none" stroke="#c9a96a" stroke-width="1" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M10 9l5 3-5 3V9z"/></svg><span>VIDEO</span></div><div class="vplay"><div class="vplay-circle"><svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+        <div class="vcard" data-src="assets/brand/brand-05.mp4" data-orient="landscape" onclick="openModal(this)">
+          <div class="vthumb land"><video muted loop playsinline preload="none" poster="assets/brand/posters/brand-05.jpg"><source src="assets/brand/brand-05.mp4" type="video/mp4"></video><div class="vplay"><div class="vplay-circle"><svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+          <div class="vlabel"><span class="vname">摩可多 · 门店介绍</span></div>
         </div>
-        <div class="vcard" data-bvid="BV1xQKo6xEQi" data-orient="landscape" onclick="openModal(this)">
-          <div class="vthumb land"><div class="vplaceholder"><svg width="42" height="42" fill="none" stroke="#c9a96a" stroke-width="1" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M10 9l5 3-5 3V9z"/></svg><span>VIDEO</span></div><div class="vplay"><div class="vplay-circle"><svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+        <div class="vcard" data-src="assets/brand/brand-06.mp4" data-orient="landscape" onclick="openModal(this)">
+          <div class="vthumb land"><video muted loop playsinline preload="none" poster="assets/brand/posters/brand-06.jpg"><source src="assets/brand/brand-06.mp4" type="video/mp4"></video><div class="vplay"><div class="vplay-circle"><svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+          <div class="vlabel"><span class="vname">摩可多 · 定制服务</span></div>
+        </div>
+        <div class="vcard" data-src="assets/brand/brand-07.mp4" data-orient="landscape" onclick="openModal(this)">
+          <div class="vthumb land"><video muted loop playsinline preload="none" poster="assets/brand/posters/brand-07.jpg"><source src="assets/brand/brand-07.mp4" type="video/mp4"></video><div class="vplay"><div class="vplay-circle"><svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+          <div class="vlabel"><span class="vname">发布会 · 神秘嘉宾预告</span></div>
+        </div>
+        <div class="vcard" data-src="assets/brand/brand-08.mp4" data-orient="landscape" onclick="openModal(this)">
+          <div class="vthumb land"><video muted loop playsinline preload="none" poster="assets/brand/posters/brand-08.jpg"><source src="assets/brand/brand-08.mp4" type="video/mp4"></video><div class="vplay"><div class="vplay-circle"><svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+          <div class="vlabel"><span class="vname">控卡卫士 · 三步曲</span></div>
+        </div>
+        <div class="vcard" data-src="assets/brand/brand-09.mp4" data-orient="landscape" onclick="openModal(this)">
+          <div class="vthumb land"><video muted loop playsinline preload="none" poster="assets/brand/posters/brand-09.jpg"><source src="assets/brand/brand-09.mp4" type="video/mp4"></video><div class="vplay"><div class="vplay-circle"><svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+          <div class="vlabel"><span class="vname">小黑条 · 日常营销</span></div>
+        </div>
+        <div class="vcard" data-src="assets/brand/brand-10.mp4" data-orient="landscape" onclick="openModal(this)">
+          <div class="vthumb land"><video muted loop playsinline preload="none" poster="assets/brand/posters/brand-10.jpg"><source src="assets/brand/brand-10.mp4" type="video/mp4"></video><div class="vplay"><div class="vplay-circle"><svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+          <div class="vlabel"><span class="vname">果蔬饮 · 产品片</span></div>
+        </div>
+        <div class="vcard" data-src="assets/brand/brand-11.mp4" data-orient="landscape" onclick="openModal(this)">
+          <div class="vthumb land"><video muted loop playsinline preload="none" poster="assets/brand/posters/brand-11.jpg"><source src="assets/brand/brand-11.mp4" type="video/mp4"></video><div class="vplay"><div class="vplay-circle"><svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+          <div class="vlabel"><span class="vname">控卡卫士 · 产品片</span></div>
+        </div>
+        <div class="vcard" data-src="assets/brand/brand-12.mp4" data-orient="landscape" onclick="openModal(this)">
+          <div class="vthumb land"><video muted loop playsinline preload="none" poster="assets/brand/posters/brand-12.jpg"><source src="assets/brand/brand-12.mp4" type="video/mp4"></video><div class="vplay"><div class="vplay-circle"><svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+          <div class="vlabel"><span class="vname">小黑条 · 产品片</span></div>
         </div>
       </div>
     </div>
@@ -665,18 +803,22 @@
           <div class="series-tag">4 支作品</div>
         </div>
       </div>
-      <div class="vgrid">
-        <div class="vcard" data-bvid="BV14SKo6oEaB" data-orient="landscape" onclick="openModal(this)">
-          <div class="vthumb land"><div class="vplaceholder"><svg width="42" height="42" fill="none" stroke="#c9a96a" stroke-width="1" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M10 9l5 3-5 3V9z"/></svg><span>VIDEO</span></div><div class="vplay"><div class="vplay-circle"><svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+      <div class="vgrid-2">
+        <div class="vcard" data-src="assets/event/event-01.mp4" data-orient="landscape" onclick="openModal(this)">
+          <div class="vthumb land"><video muted loop playsinline preload="none" poster="assets/event/posters/event-01.jpg"><source src="assets/event/event-01.mp4" type="video/mp4"></video><div class="vplay"><div class="vplay-circle"><svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+          <div class="vlabel"><span class="vname">摩可多 · 双翼齐飞会议快闪</span></div>
         </div>
-        <div class="vcard" data-bvid="BV14SKo6oEEn" data-orient="landscape" onclick="openModal(this)">
-          <div class="vthumb land"><div class="vplaceholder"><svg width="42" height="42" fill="none" stroke="#c9a96a" stroke-width="1" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M10 9l5 3-5 3V9z"/></svg><span>VIDEO</span></div><div class="vplay"><div class="vplay-circle"><svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+        <div class="vcard" data-src="assets/event/event-02.mp4" data-orient="landscape" onclick="openModal(this)">
+          <div class="vthumb land"><video muted loop playsinline preload="none" poster="assets/event/posters/event-02.jpg"><source src="assets/event/event-02.mp4" type="video/mp4"></video><div class="vplay"><div class="vplay-circle"><svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+          <div class="vlabel"><span class="vname">摩可多 · 升级战略会议现场</span></div>
         </div>
-        <div class="vcard" data-bvid="BV14SKo6oEiY" data-orient="landscape" onclick="openModal(this)">
-          <div class="vthumb land"><div class="vplaceholder"><svg width="42" height="42" fill="none" stroke="#c9a96a" stroke-width="1" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M10 9l5 3-5 3V9z"/></svg><span>VIDEO</span></div><div class="vplay"><div class="vplay-circle"><svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+        <div class="vcard" data-src="assets/event/event-03.mp4" data-orient="landscape" onclick="openModal(this)">
+          <div class="vthumb land"><video muted loop playsinline preload="none" poster="assets/event/posters/event-03.jpg"><source src="assets/event/event-03.mp4" type="video/mp4"></video><div class="vplay"><div class="vplay-circle"><svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+          <div class="vlabel"><span class="vname">双翼齐飞 · 会场舞美</span></div>
         </div>
-        <div class="vcard" data-bvid="BV1ETKZ6LErq" data-orient="landscape" onclick="openModal(this)">
-          <div class="vthumb land"><div class="vplaceholder"><svg width="42" height="42" fill="none" stroke="#c9a96a" stroke-width="1" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M10 9l5 3-5 3V9z"/></svg><span>VIDEO</span></div><div class="vplay"><div class="vplay-circle"><svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+        <div class="vcard" data-src="assets/event/event-04.mp4" data-orient="landscape" onclick="openModal(this)">
+          <div class="vthumb land"><video muted loop playsinline preload="none" poster="assets/event/posters/event-04.jpg"><source src="assets/event/event-04.mp4" type="video/mp4"></video><div class="vplay"><div class="vplay-circle"><svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+          <div class="vlabel"><span class="vname">双翼齐飞 · 开场大屏</span></div>
         </div>
       </div>
     </div>
@@ -690,15 +832,71 @@
           <div class="series-tag">3 支作品</div>
         </div>
       </div>
+      <div class="vgrid vgrid-mixed">
+        <div class="vcard" data-src="assets/star/star-01.mp4" data-orient="portrait" onclick="openModal(this)">
+          <div class="vthumb"><video muted loop playsinline preload="none" poster="assets/star/posters/star-01.jpg"><source src="assets/star/star-01.mp4" type="video/mp4"></video><div class="vplay"><div class="vplay-circle"><svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+          <div class="vlabel"><span class="vname">明星 Vlog · 种草拍摄</span></div>
+        </div>
+        <div class="vcard" data-src="assets/star/star-02.mp4" data-orient="portrait" onclick="openModal(this)">
+          <div class="vthumb"><video muted loop playsinline preload="none" poster="assets/star/posters/star-02.jpg"><source src="assets/star/star-02.mp4" type="video/mp4"></video><div class="vplay"><div class="vplay-circle"><svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+          <div class="vlabel"><span class="vname">海外网红 · 营销视频</span></div>
+        </div>
+        <div class="vcard" data-src="assets/star/star-03.mp4" data-orient="landscape" onclick="openModal(this)">
+          <div class="vthumb land"><video muted loop playsinline preload="none" poster="assets/star/posters/star-03.jpg"><source src="assets/star/star-03.mp4" type="video/mp4"></video><div class="vplay"><div class="vplay-circle"><svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+          <div class="vlabel"><span class="vname">希卡贝尔 · 李冰冰</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- AIGC 创作 -->
+    <div class="series reveal" id="aigc">
+      <div class="series-head">
+        <div class="series-num serif">05</div>
+        <div class="series-info">
+          <div class="series-name">AIGC 创作</div>
+          <div class="series-sub">用即梦、Kling、Seedance 等 AI 视频工具独立产出的商业级素材：从提示词与分镜设计、多版生成筛选，到与实拍混剪、统一调色，全流程闭环。悬停卡片即可预览。</div>
+          <div class="series-tag">8 支作品</div>
+        </div>
+      </div>
+
+      <div class="vfeature-wrap">
+        <div class="vcard" data-src="assets/aigc/aigc-08.mp4" data-orient="landscape" onclick="openModal(this)">
+          <div class="vthumb wide"><video muted loop playsinline preload="none" poster="assets/aigc/posters/aigc-08.jpg"><source src="assets/aigc/aigc-08.mp4" type="video/mp4"></video><div class="vplay"><div class="vplay-circle"><svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+          <div class="vlabel"><span class="vname">谷雨 · 光感精华霜产品短片</span><span class="vmeta">22s · 1080P</span></div>
+        </div>
+      </div>
+
+      <div class="vgrid-4">
+        <div class="vcard" data-src="assets/aigc/aigc-01.mp4" data-orient="portrait" onclick="openModal(this)">
+          <div class="vthumb"><video muted loop playsinline preload="none" poster="assets/aigc/posters/aigc-01.jpg"><source src="assets/aigc/aigc-01.mp4" type="video/mp4"></video><div class="vplay"><div class="vplay-circle"><svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+          <div class="vlabel"><span class="vname">雅丽洁 · 防晒乳质感篇</span></div>
+        </div>
+        <div class="vcard" data-src="assets/aigc/aigc-02.mp4" data-orient="portrait" onclick="openModal(this)">
+          <div class="vthumb"><video muted loop playsinline preload="none" poster="assets/aigc/posters/aigc-02.jpg"><source src="assets/aigc/aigc-02.mp4" type="video/mp4"></video><div class="vplay"><div class="vplay-circle"><svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+          <div class="vlabel"><span class="vname">雅丽洁 · 防晒乳人像篇</span></div>
+        </div>
+        <div class="vcard" data-src="assets/aigc/aigc-03.mp4" data-orient="portrait" onclick="openModal(this)">
+          <div class="vthumb"><video muted loop playsinline preload="none" poster="assets/aigc/posters/aigc-03.jpg"><source src="assets/aigc/aigc-03.mp4" type="video/mp4"></video><div class="vplay"><div class="vplay-circle"><svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+          <div class="vlabel"><span class="vname">护肤氛围 · 人像特写</span></div>
+        </div>
+        <div class="vcard" data-src="assets/aigc/aigc-07.mp4" data-orient="portrait" onclick="openModal(this)">
+          <div class="vthumb"><video muted loop playsinline preload="none" poster="assets/aigc/posters/aigc-07.jpg"><source src="assets/aigc/aigc-07.mp4" type="video/mp4"></video><div class="vplay"><div class="vplay-circle"><svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+          <div class="vlabel"><span class="vname">谛梵 · 防脱洗发乳水感篇</span></div>
+        </div>
+      </div>
+
       <div class="vgrid">
-        <div class="vcard" data-bvid="BV1qgKZ6VERj" data-orient="portrait" onclick="openModal(this)">
-          <div class="vthumb"><div class="vplaceholder"><svg width="42" height="42" fill="none" stroke="#c9a96a" stroke-width="1" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M10 9l5 3-5 3V9z"/></svg><span>VIDEO</span></div><div class="vplay"><div class="vplay-circle"><svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+        <div class="vcard" data-src="assets/aigc/aigc-04.mp4" data-orient="landscape" onclick="openModal(this)">
+          <div class="vthumb land"><video muted loop playsinline preload="none" poster="assets/aigc/posters/aigc-04.jpg"><source src="assets/aigc/aigc-04.mp4" type="video/mp4"></video><div class="vplay"><div class="vplay-circle"><svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+          <div class="vlabel"><span class="vname">摩可多 · 空间光影篇</span></div>
         </div>
-        <div class="vcard" data-bvid="BV17gKZ6VEBA" data-orient="portrait" onclick="openModal(this)">
-          <div class="vthumb"><div class="vplaceholder"><svg width="42" height="42" fill="none" stroke="#c9a96a" stroke-width="1" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M10 9l5 3-5 3V9z"/></svg><span>VIDEO</span></div><div class="vplay"><div class="vplay-circle"><svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+        <div class="vcard" data-src="assets/aigc/aigc-05.mp4" data-orient="landscape" onclick="openModal(this)">
+          <div class="vthumb land"><video muted loop playsinline preload="none" poster="assets/aigc/posters/aigc-05.jpg"><source src="assets/aigc/aigc-05.mp4" type="video/mp4"></video><div class="vplay"><div class="vplay-circle"><svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+          <div class="vlabel"><span class="vname">摩可多 · 产品氛围篇</span></div>
         </div>
-        <div class="vcard" data-bvid="BV1BgKZ6VEKD" data-orient="portrait" onclick="openModal(this)">
-          <div class="vthumb"><div class="vplaceholder"><svg width="42" height="42" fill="none" stroke="#c9a96a" stroke-width="1" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M10 9l5 3-5 3V9z"/></svg><span>VIDEO</span></div><div class="vplay"><div class="vplay-circle"><svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+        <div class="vcard" data-src="assets/aigc/aigc-06.mp4" data-orient="landscape" onclick="openModal(this)">
+          <div class="vthumb land"><video muted loop playsinline preload="none" poster="assets/aigc/posters/aigc-06.jpg"><source src="assets/aigc/aigc-06.mp4" type="video/mp4"></video><div class="vplay"><div class="vplay-circle"><svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+          <div class="vlabel"><span class="vname">摩可多 · 生活方式篇</span></div>
         </div>
       </div>
     </div>
@@ -709,13 +907,12 @@
 <section id="experience">
   <div class="sec-pad">
     <div class="sec-head reveal">
-      <span class="sec-index">04 —</span>
       <h2 class="sec-title serif">工作经历</h2>
       <div class="sec-rule"></div>
     </div>
     <div class="timeline">
       <div class="tl-item reveal">
-        <div class="tl-period">2025.04 — 2026.06<span class="tl-role">资深摄像师</span></div>
+        <div class="tl-period">2025.04 - 2026.06<span class="tl-role">资深摄像师</span></div>
         <div>
           <div class="tl-company">广州知源持明健康科技有限公司</div>
           <ul class="tl-points">
@@ -727,7 +924,7 @@
         </div>
       </div>
       <div class="tl-item reveal">
-        <div class="tl-period">2024.01 — 2025.04<span class="tl-role">资深摄像师</span></div>
+        <div class="tl-period">2024.01 - 2025.04<span class="tl-role">资深摄像师</span></div>
         <div>
           <div class="tl-company">广东广播电视台</div>
           <ul class="tl-points">
@@ -738,7 +935,7 @@
         </div>
       </div>
       <div class="tl-item reveal">
-        <div class="tl-period">2021 — 2024<span class="tl-role">大专</span></div>
+        <div class="tl-period">2021 - 2024<span class="tl-role">大专</span></div>
         <div>
           <div class="tl-company">广州城市职业学院</div>
           <ul class="tl-points">
@@ -772,6 +969,10 @@
   </footer>
 </section>
 
+<button id="back-top" aria-label="回到顶部">
+  <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M18 15l-6-6-6 6"/></svg>
+</button>
+
 <!-- ============ MODAL ============ -->
 <div class="modal-overlay" id="modal" onclick="closeModalOutside(event)">
   <div class="modal-inner" id="modal-inner">
@@ -780,28 +981,35 @@
       关闭
     </button>
     <div class="modal-vwrap" id="modal-wrap">
-      <iframe id="modal-iframe" frameborder="0" scrolling="no" allowfullscreen="true" allow="autoplay; fullscreen"></iframe>
     </div>
   </div>
 </div>
 
 <script>
-  // Modal
+  // Modal：本地视频弹窗，按作品实际方向设置比例
   function openModal(card) {
-    const bvid = card.dataset.bvid;
-    if (!bvid) return;
-    // B站播放器统一 16:9 横向尺寸
-    document.getElementById('modal-inner').className = 'modal-inner land';
-    document.getElementById('modal-wrap').className = 'modal-vwrap land';
-    const iframe = document.getElementById('modal-iframe');
-    // B站官方嵌入播放器
-    iframe.src = '//player.bilibili.com/player.html?bvid=' + bvid + '&autoplay=1&high_quality=1&danmaku=0';
+    const src = card.dataset.src;
+    if (!src) return;
+    const wrap = document.getElementById('modal-wrap');
+    const land = card.dataset.orient !== 'portrait';
+    document.getElementById('modal-inner').className = 'modal-inner' + (land ? ' land' : '');
+    wrap.className = 'modal-vwrap' + (land ? ' land' : '');
+    let video = document.getElementById('modal-video');
+    if (!video) {
+      video = document.createElement('video');
+      video.id = 'modal-video';
+      video.controls = true;
+      video.playsInline = true;
+      wrap.appendChild(video);
+    }
+    video.src = src;
+    video.play();
     document.getElementById('modal').classList.add('open');
     document.body.style.overflow = 'hidden';
   }
   function closeModal() {
-    const iframe = document.getElementById('modal-iframe');
-    iframe.src = '';
+    const video = document.getElementById('modal-video');
+    if (video) { video.pause(); video.removeAttribute('src'); video.load(); }
     document.getElementById('modal').classList.remove('open');
     document.body.style.overflow = '';
   }
@@ -872,41 +1080,22 @@
   }
   document.addEventListener('keydown', e => { if (e.key === 'Escape') { const nav = document.getElementById('nav-mobile'); if (nav.classList.contains('open')) toggleMobileNav(); } });
 
-  // Bilibili thumbnail + title auto-load
-  (async function loadBilibiliThumbs() {
-    const cards = document.querySelectorAll('.vcard[data-bvid]');
-    for (const card of cards) {
-      const bvid = card.dataset.bvid;
-      try {
-        const res = await fetch('https://api.bilibili.com/x/web-interface/view?bvid=' + bvid);
-        if (!res.ok) continue;
-        const json = await res.json();
-        if (json.code !== 0 || !json.data) continue;
-        const d = json.data;
-        const thumb = card.querySelector('.vthumb');
-        const ph = thumb.querySelector('.vplaceholder');
-        // Inject cover image
-        const img = document.createElement('img');
-        img.src = d.pic;
-        img.alt = d.title || '';
-        img.style.cssText = 'width:100%;height:100%;object-fit:cover;position:absolute;inset:0;filter:brightness(.8) saturate(.88);transition:filter .35s;';
-        thumb.insertBefore(img, ph);
-        ph.style.display = 'none';
-        card.addEventListener('mouseenter', () => img.style.filter = 'brightness(.96) saturate(1.06)');
-        card.addEventListener('mouseleave', () => img.style.filter = 'brightness(.8) saturate(.88)');
-        // Inject title label
-        if (d.title) {
-          const lbl = document.createElement('div');
-          lbl.className = 'vlabel';
-          const name = document.createElement('div');
-          name.className = 'vname';
-          name.textContent = d.title;
-          lbl.appendChild(name);
-          card.appendChild(lbl);
-        }
-      } catch (e) { /* API不可用时静默降级 */ }
-    }
+  // 作品卡片悬停静音预览（触屏与减少动态偏好下不启用）
+  (function hoverPreview() {
+    const skip = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
+                    || window.matchMedia('(hover: none)').matches;
+    document.querySelectorAll('.vcard[data-src]').forEach(card => {
+      const v = card.querySelector('.vthumb video');
+      if (!v) return;
+      card.addEventListener('mouseenter', () => { if (!skip()) v.play().catch(() => {}); });
+      card.addEventListener('mouseleave', () => { v.pause(); });
+    });
   })();
+
+  // Scroll-to-top button
+  const backTop = document.getElementById('back-top');
+  window.addEventListener('scroll', () => backTop.classList.toggle('show', window.scrollY > 500));
+  backTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
   // Scroll reveal + animation triggers
   const io = new IntersectionObserver((entries) => {
