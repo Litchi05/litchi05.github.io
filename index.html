@@ -1076,6 +1076,20 @@
 </div>
 
 <script>
+  // 手机与慢速网络优先使用轻量视频，桌面宽屏继续播放高清版
+  function getPlaybackSrc(src) {
+    const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+    const mobileDevice = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+    const slowNetwork = Boolean(connection && (
+      connection.saveData ||
+      ['slow-2g', '2g', '3g'].includes(connection.effectiveType)
+    ));
+    const mobileViewport = window.matchMedia('(max-width: 768px)').matches;
+    return (mobileDevice || mobileViewport || slowNetwork)
+      ? src.replace(/^assets\//, 'assets/mobile/')
+      : src;
+  }
+
   // Modal：本地视频弹窗，按作品实际方向设置比例
   function openModal(card) {
     const src = card.dataset.src;
@@ -1098,8 +1112,8 @@
       const status = wrap.querySelector('.modal-loading');
       if (status) status.textContent = '加载失败，请检查网络后重试';
     };
-    video.src = src;
-    video.play();
+    video.src = getPlaybackSrc(src);
+    video.play().catch(() => {});
     document.getElementById('modal').classList.add('open');
     document.body.style.overflow = 'hidden';
   }
