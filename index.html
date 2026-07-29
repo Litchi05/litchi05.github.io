@@ -1051,16 +1051,18 @@
   const profileSection = document.getElementById('profile');
   if (worksSection && profileSection) profileSection.before(worksSection);
 
-  // 手机与慢速网络优先使用轻量视频，桌面宽屏继续播放高清版
+  // 仅手机窄屏与慢速网络使用移动版，避免桌面浏览器因 UA 误判而播放低清视频
   function getPlaybackSrc(src) {
+    // 新增的三支 AIGC 作品按原片展示，不做画质降级
+    if (/^assets\/aigc\/aigc-(09|10|11)\.mp4$/.test(src)) return src;
+
     const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
-    const mobileDevice = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
     const slowNetwork = Boolean(connection && (
       connection.saveData ||
       ['slow-2g', '2g', '3g'].includes(connection.effectiveType)
     ));
     const mobileViewport = window.matchMedia('(max-width: 768px)').matches;
-    return (mobileDevice || mobileViewport || slowNetwork)
+    return (mobileViewport || slowNetwork)
       ? src.replace(/^assets\//, 'assets/mobile/')
       : src;
   }
