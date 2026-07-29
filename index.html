@@ -239,8 +239,11 @@
   .vplay-circle svg { margin-left: 3px; }
 
   /* ============ AIGC SERIES ============ */
-  .vfeature-wrap { margin-left: 138px; margin-bottom: 18px; }
-  .vthumb.wide { aspect-ratio: 21/9; }
+  .vfeature-wrap {
+    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px;
+    margin-left: 138px; margin-bottom: 18px;
+  }
+  .vthumb.wide { aspect-ratio: 16/9; }
   .vgrid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-left: 138px; margin-bottom: 18px; }
   .vgrid-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; margin-left: 138px; }
   .vgrid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; margin-left: 138px; }
@@ -418,7 +421,7 @@
     .vgrid-4 { margin-left: 0; grid-template-columns: repeat(2, 1fr); }
     .vgrid-5 { margin-left: 0; grid-template-columns: repeat(3, 1fr); }
     .vgrid-2 { margin-left: 0; grid-template-columns: 1fr; }
-    .vfeature-wrap { margin-left: 0; }
+    .vfeature-wrap { margin-left: 0; grid-template-columns: 1fr; }
     .vthumb.wide { aspect-ratio: 16/9; }
   }
   @media (max-width: 768px) {
@@ -741,6 +744,10 @@
           <div class="vthumb wide"><video muted loop playsinline preload="none" data-poster="assets/aigc/posters/aigc-08.jpg"><source src="assets/aigc/aigc-08.mp4" type="video/mp4"></video><div class="vplay"><div class="vplay-circle"><svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div></div>
           <div class="vlabel"><span class="vname">谷雨 · 光感精华霜产品短片</span><span class="vmeta">22s · 1080P</span></div>
         </div>
+        <div class="vcard" data-src="assets/aigc/aigc-09.mp4" data-orient="landscape" onclick="openModal(this)">
+          <div class="vthumb wide"><video muted loop playsinline preload="none" data-poster="assets/aigc/posters/aigc-09.jpg"><source src="assets/aigc/aigc-09.mp4" type="video/mp4"></video><div class="vplay"><div class="vplay-circle"><svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div></div>
+          <div class="vlabel"><span class="vname">AI 时装 · 都市光影篇</span><span class="vmeta">26s · 1080P</span></div>
+        </div>
       </div>
 
       <div class="vgrid-4">
@@ -771,10 +778,6 @@
       </div>
 
       <div class="vgrid">
-        <div class="vcard" data-src="assets/aigc/aigc-09.mp4" data-orient="landscape" onclick="openModal(this)">
-          <div class="vthumb land"><video muted loop playsinline preload="none" data-poster="assets/aigc/posters/aigc-09.jpg"><source src="assets/aigc/aigc-09.mp4" type="video/mp4"></video><div class="vplay"><div class="vplay-circle"><svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div></div>
-          <div class="vlabel"><span class="vname">AI 时装 · 都市光影篇</span></div>
-        </div>
         <div class="vcard" data-src="assets/aigc/aigc-04.mp4" data-orient="landscape" onclick="openModal(this)">
           <div class="vthumb land"><video muted loop playsinline preload="none" data-poster="assets/aigc/posters/aigc-04.jpg"><source src="assets/aigc/aigc-04.mp4" type="video/mp4"></video><div class="vplay"><div class="vplay-circle"><svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div></div>
           <div class="vlabel"><span class="vname">摩可多 · 空间光影篇</span></div>
